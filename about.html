@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About - Strumly</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">Strumly</a>
+      <div class="search-wrap">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input id="globalSearch" class="search" placeholder="Search courses, instructors, songs..." aria-label="Search" />
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active-nav">About</a>
+        <a href="index.html#features">Features</a>
+        <a href="auth.html" class="btn outline">Log In</a>
+        <a href="auth.html" class="btn primary">Sign Up</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="about-hero text-center section-padding" style="padding-bottom: 40px;">
+      <h2 style="color: var(--accent); font-size: 18px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; font-weight: 700;">Our Story</h2>
+      <h1 style="font-size: 42px; margin-bottom: 16px;">We help you find your <span class="text-gradient">sound.</span></h1>
+      <p class="lead" style="margin: 0 auto; max-width: 700px;">We believe learning guitar should be accessible, structured, and genuinely fun. Strumly was built by musicians, for future musicians, to bridge the gap between boring theory and playing the songs you actually love.</p>
+    </section>
+
+    <section class="stats section-padding" style="padding-top: 0;">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value" data-target="15000">0</span>
+          <span class="stat-label muted">Active Students</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" data-target="120">0</span>
+          <span class="stat-label muted">Curated Courses</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" data-target="45">0</span>
+          <span class="stat-label muted">Expert Instructors</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" data-target="500">0</span>
+          <span class="stat-label muted">Song Tutorials</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="team section-padding">
+      <div class="section-header text-center">
+        <h2>Meet the Instructors</h2>
+        <p class="muted">Learn from world-class touring musicians and dedicated educators.</p>
+      </div>
+      <div class="grid" id="teamGrid" style="margin-top: 32px;">
+        </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="brand-footer">
+        <div class="logo">Strumly</div>
+        <p class="muted small" style="margin: 4px 0 0 0;">© <span id="year2">2026</span> All rights reserved.</p>
+      </div>
+      <div class="credits muted small">
+        Images: Unsplash. UI icons: Feather Icons.<br>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
