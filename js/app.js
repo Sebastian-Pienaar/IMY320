@@ -150,134 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const courseList = document.getElementById("courseList");
   if (courseList) {
-    const mockCourses = [
-      {
-        title: "Acoustic Fingerpicking 101",
-        rating: 4.8,
-        reviews: 1240,
-        status: "progress",
-        instructor: "Sarah Jenkins",
-        level: "Beginner",
-        blurb:
-          "Build clean, independent finger patterns from scratch and play your first full fingerstyle arrangement.",
-        minutes: 380,
-        learners: 8420,
-        likes: 612,
-        image:
-          "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&q=80",
-        modules: [
-          { title: "Hand position and thumb independence", minutes: 45 },
-          { title: "Travis picking pattern", minutes: 60 },
-          { title: "Adding melody notes", minutes: 75 },
-          { title: "Playing your first arrangement", minutes: 90 },
-        ],
-      },
-      {
-        title: "Electric Rock Solos",
-        rating: 4.6,
-        reviews: 870,
-        status: "new",
-        instructor: "Mike Torres",
-        level: "Intermediate",
-        blurb:
-          "Bends, vibrato and phrasing drills that turn scale shapes into solos people actually want to hear.",
-        minutes: 520,
-        learners: 6150,
-        likes: 498,
-        image:
-          "https://images.unsplash.com/photo-1550291652-6ea9114a47b1?w=600&q=80",
-        modules: [
-          { title: "Pentatonic shapes across the neck", minutes: 70 },
-          { title: "Bending in tune", minutes: 55 },
-          { title: "Vibrato and sustain control", minutes: 65 },
-          { title: "Building a solo over a backing track", minutes: 95 },
-        ],
-      },
-      {
-        title: "Music Theory for Guitarists",
-        rating: 4.9,
-        reviews: 2310,
-        status: "complete",
-        instructor: "David Chen",
-        level: "Beginner",
-        blurb:
-          "Keys, intervals and the CAGED system explained on the fretboard, with no sheet music required.",
-        minutes: 290,
-        learners: 11230,
-        likes: 940,
-        image:
-          "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=600&q=80",
-        modules: [
-          { title: "Notes on the fretboard", minutes: 40 },
-          { title: "Intervals and triads", minutes: 55 },
-          { title: "The CAGED system", minutes: 80 },
-          { title: "Keys and chord families", minutes: 60 },
-        ],
-      },
-      {
-        title: "Blues Rhythm Mastery",
-        rating: 4.7,
-        reviews: 540,
-        status: "progress",
-        instructor: "Emma Lin",
-        level: "Advanced",
-        blurb:
-          "Shuffle feels, turnarounds and comping voicings for playing rhythm in a live blues band.",
-        minutes: 445,
-        learners: 3980,
-        likes: 356,
-        image:
-          "https://images.unsplash.com/photo-1541689592655-f5f52825a3b8?w=600&q=80",
-        modules: [
-          { title: "The 12-bar form and shuffle feel", minutes: 60 },
-          { title: "Dominant 7th voicings", minutes: 70 },
-          { title: "Turnarounds and stops", minutes: 75 },
-          { title: "Comping behind a soloist", minutes: 85 },
-        ],
-      },
-      {
-        title: "Songwriting on Six Strings",
-        rating: 4.5,
-        reviews: 690,
-        status: "new",
-        instructor: "Marcus Cole",
-        level: "Intermediate",
-        blurb:
-          "Turn chord progressions into finished songs using structure, melody and lyric-writing exercises.",
-        minutes: 215,
-        learners: 5240,
-        likes: 421,
-        image:
-          "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
-        modules: [
-          { title: "Progressions that carry a song", minutes: 45 },
-          { title: "Verse, chorus and bridge", minutes: 50 },
-          { title: "Writing a singable melody", minutes: 55 },
-          { title: "Finishing and arranging", minutes: 65 },
-        ],
-      },
-      {
-        title: "Jazz Chord Voicings",
-        rating: 4.8,
-        reviews: 320,
-        status: "new",
-        instructor: "Elena Rostova",
-        level: "Advanced",
-        blurb:
-          "Drop-2 shapes, extensions and voice leading for comping through standards with confidence.",
-        minutes: 610,
-        learners: 2470,
-        likes: 289,
-        image:
-          "https://images.unsplash.com/photo-1524230572899-a752b3835840?w=600&q=80",
-        modules: [
-          { title: "Shell voicings and guide tones", minutes: 80 },
-          { title: "Drop-2 shapes", minutes: 95 },
-          { title: "Extensions and alterations", minutes: 110 },
-          { title: "Comping through a standard", minutes: 125 },
-        ],
-      },
-    ];
+    const mockCourses = strumlyCourses;
 
     const statusMeta = {
       new: { label: "Not started", cls: "is-new", cta: "Start Learning" },
@@ -331,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
           <div class="row-body">
             <div class="row-head">
-              <h3><a class="row-link" href="auth.html">${course.title}</a></h3>
+              <h3><a class="row-link" href="course.html?id=${course.id}">${course.title}</a></h3>
               <span class="course-badge is-${course.level.toLowerCase()}">${course.level}</span>
               <span class="status-badge ${status.cls}">${status.label}</span>
             </div>
@@ -348,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </button>
           </div>
           <div class="row-actions">
-            <a class="btn primary" href="auth.html">${status.cta}</a>
+            <a class="btn primary" href="course.html?id=${course.id}">${status.cta}</a>
           </div>
           <div class="row-modules" id="${panelId}" hidden>
             <h4 class="modules-title">Modules</h4>
@@ -430,29 +303,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- 6. About Page Dynamic Content & Animations ---
   const teamGrid = document.getElementById("teamGrid");
   if (teamGrid) {
-    const mockInstructors = [
-      {
-        name: "Marcus Cole",
-        role: "Lead Acoustic Instructor",
-        bio: "Former session guitarist with 15 years of touring experience. Marcus specializes in fingerstyle and folk.",
-        image:
-          "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=400&q=80",
-      },
-      {
-        name: "Elena Rostova",
-        role: "Music Theory Expert",
-        bio: "Classically trained at Berklee, Elena breaks down complex theory into easily digestible, practical guitar lessons.",
-        image:
-          "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80",
-      },
-      {
-        name: "Julian Vance",
-        role: "Electric & Blues Coach",
-        bio: "Julian lives and breathes the blues. He focuses on improvisation, tone building, and expressive soloing.",
-        image:
-          "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&q=80",
-      },
-    ];
+    const mockInstructors = Object.entries(strumlyInstructors).map(
+      ([name, info]) => ({ name, ...info }),
+    );
 
     mockInstructors.forEach((instructor) => {
       const cardHTML = `
@@ -506,6 +359,140 @@ document.addEventListener("DOMContentLoaded", () => {
     const statsSection = document.querySelector(".stats");
     if (statsSection) observer.observe(statsSection);
   }
+
+  const courseMain = document.getElementById("courseMain");
+  if (courseMain) {
+    const params = new URLSearchParams(window.location.search);
+    const course = strumlyCourses.find((c) => c.id === params.get("id"));
+
+    if (!course) {
+      courseMain.innerHTML = `
+        <div class="course-missing">
+          <h1>Course not found</h1>
+          <p class="muted">That course link is not valid or the course has been removed.</p>
+          <a class="btn primary large" href="index.html#courses">Back to the catalogue</a>
+        </div>
+      `;
+    } else {
+      document.title = `${course.title} - Strumly`;
+
+      const statusLabels = {
+        new: "Not started",
+        progress: "In progress",
+        complete: "Completed",
+      };
+      const statusClasses = {
+        new: "is-new",
+        progress: "is-progress",
+        complete: "is-complete",
+      };
+
+      const fmt = (mins) => {
+        const h = Math.floor(mins / 60);
+        const m = mins % 60;
+        return h ? `${h}h ${m ? m + "m" : ""}`.trim() : `${m}m`;
+      };
+
+      const instructor = strumlyInstructors[course.instructor];
+      const totalMinutes = course.modules.reduce(
+        (sum, m) => sum + m.minutes,
+        0,
+      );
+
+      const syllabus = course.modules
+        .map(
+          (m, i) => `
+            <li class="syllabus-item">
+              <span class="syllabus-num">${String(i + 1).padStart(2, "0")}</span>
+              <span class="syllabus-name">${m.title}</span>
+              <span class="syllabus-time muted">${fmt(m.minutes)}</span>
+            </li>`,
+        )
+        .join("");
+
+      const prereqs = course.prerequisites
+        .map((p) => `<li class="prereq-item">${p}</li>`)
+        .join("");
+
+      courseMain.innerHTML = `
+        <a class="back-link" href="index.html#courses">&larr; Back to catalogue</a>
+
+        <header class="course-header">
+          <div class="course-header-body">
+            <div class="course-tags">
+              <span class="course-badge is-${course.level.toLowerCase()}">${course.level}</span>
+              <span class="status-badge ${statusClasses[course.status]}">${statusLabels[course.status]}</span>
+            </div>
+            <h1>${course.title}</h1>
+            <p class="lead muted">${course.blurb}</p>
+            <ul class="course-facts">
+              <li class="row-rating"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.1 8.6 22 9.5 17 14.4 18.2 21.5 12 18.1 5.8 21.5 7 14.4 2 9.5 8.9 8.6 12 2"></polygon></svg><strong>${course.rating}</strong> (${course.reviews.toLocaleString()} ratings)</li>
+              <li>${course.learners.toLocaleString()} learners</li>
+              <li>${fmt(course.minutes)} of lessons</li>
+              <li>Taught by ${course.instructor}</li>
+            </ul>
+          </div>
+          <img class="course-header-img" src="${course.image}" alt="${course.title}">
+        </header>
+
+        <div class="course-layout">
+          <div class="course-content">
+            <section class="course-section">
+              <h2>About this course</h2>
+              <p>${course.description}</p>
+            </section>
+
+            <section class="course-section">
+              <h2>Curriculum</h2>
+              <p class="muted small">${course.modules.length} modules &middot; ${fmt(totalMinutes)} total</p>
+              <ol class="syllabus-list">${syllabus}</ol>
+            </section>
+
+            <section class="course-section">
+              <h2>Prerequisites</h2>
+              <ul class="prereq-list">${prereqs}</ul>
+            </section>
+
+            <section class="course-section">
+              <h2>Your instructor</h2>
+              <div class="instructor-card">
+                <img class="instructor-img" src="${instructor.image}" alt="${course.instructor}">
+                <div>
+                  <h3>${course.instructor}</h3>
+                  <span class="team-role">${instructor.role}</span>
+                  <p class="muted">${instructor.bio}</p>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <aside class="enroll-panel">
+            <span class="enroll-price">Included with Strumly</span>
+            <p class="muted small">Full lifetime access to all ${course.modules.length} modules.</p>
+            <button type="button" class="btn primary enroll-btn" id="enrollBtn">Enroll Now</button>
+            <button type="button" class="btn ghost save-btn" id="saveBtn">Save for Later</button>
+            <ul class="enroll-facts muted small">
+              <li>${fmt(totalMinutes)} of video lessons</li>
+              <li>Learn at your own pace</li>
+              <li>Certificate on completion</li>
+            </ul>
+          </aside>
+        </div>
+      `;
+
+      const enrollBtn = document.getElementById("enrollBtn");
+      const saveBtn = document.getElementById("saveBtn");
+
+      enrollBtn.addEventListener("click", () => {
+        showToast(`Enrolled in '${course.title}'! (Simulated)`);
+      });
+
+      saveBtn.addEventListener("click", () => {
+        showToast(`'${course.title}' saved to your list. (Simulated)`);
+      });
+    }
+  }
+
   // --- 7. Simulated Search Functionality ---
   const searchInput = document.getElementById("globalSearch");
   if (searchInput) {
