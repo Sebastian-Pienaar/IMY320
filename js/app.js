@@ -234,60 +234,73 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderCourses() {
 
       // Check if user is currently logged in via localStorage
-const isLoggedIn = Boolean(localStorage.getItem("strumly_user"));
+      const isLoggedIn = Boolean(localStorage.getItem("strumly_user"));
 
-function buildRow(course, index) {
-  // Default values for logged-out users
-  let statusLabel = "Available";
-  let statusClass = "is-new";
-  let buttonLabel = "View Course";
+      function buildRow(course, index) {
+        // Default values for logged-out users
+        let statusLabel = "Available";
+        let statusClass = "is-new";
+        let buttonLabel = "View Course";
 
-  // Only display progress meta if the user is actively logged in
-  if (isLoggedIn) {
-    if (course.status === "progress") {
-      statusLabel = "In progress";
-      statusClass = "is-progress";
-      buttonLabel = "Continue";
-    } else if (course.status === "complete") {
-      statusLabel = "Completed";
-      statusClass = "is-complete";
-      buttonLabel = "Review Course";
-    } else {
-      statusLabel = "Not started";
-      statusClass = "is-new";
-      buttonLabel = "Start Learning";
-    }
-  }
+        // Only display progress meta if the user is actively logged in
+        if (isLoggedIn) {
+          if (course.status === "progress") {
+            statusLabel = "In progress";
+            statusClass = "is-progress";
+            buttonLabel = "Continue";
+          } else if (course.status === "complete") {
+            statusLabel = "Completed";
+            statusClass = "is-complete";
+            buttonLabel = "Review Course";
+          } else {
+            statusLabel = "Not started";
+            statusClass = "is-new";
+            buttonLabel = "Start Learning";
+          }
+        }
 
-  const panelId = `modules-${index}`;
+        const panelId = `modules-${index}`;
+        const modules = course.modules
+          .map(
+            (m, i) => `
+              <li class="module-item">
+                <span class="module-name">${i + 1}. ${m.title}</span>
+                <span class="module-time">${formatDuration(m.minutes)}</span>
+              </li>`,
+          )
+          .join("");
 
-  return `
-    <article class="course-row">
-      <div class="row-thumb">
-        <img src="${course.image}" alt="${course.title}">
-      </div>
-      <div class="row-body">
-        <div class="row-head">
-          <h3><a class="row-link" href="course.html?id=${course.id}">${course.title}</a></h3>
-          <span class="course-badge is-${course.level.toLowerCase()}">${course.level}</span>
-          ${isLoggedIn ? `<span class="status-badge ${statusClass}">${statusLabel}</span>` : ''}
-        </div>
-        <p class="row-desc muted small">${course.blurb}</p>
-        <ul class="row-meta">
-          <li class="row-rating"><strong>★ ${course.rating}</strong> (${course.reviews.toLocaleString()})</li>
-          <li>${course.duration || '3h 30m'}</li>
-          <li>Instructor: ${course.instructor}</li>
-        </ul>
-        <button type="button" class="more-info" aria-expanded="false" aria-controls="${panelId}">
-          <span class="more-info-label">More Info</span>
-        </button>
-      </div>
-      <div class="row-actions">
-        <a class="btn primary" href="course.html?id=${course.id}">${buttonLabel}</a>
-      </div>
-    </article>
-  `;
-}
+        return `
+          <article class="course-row">
+            <div class="row-thumb">
+              <img src="${course.image}" alt="${course.title}">
+            </div>
+            <div class="row-body">
+              <div class="row-head">
+                <h3><a class="row-link" href="course.html?id=${course.id}">${course.title}</a></h3>
+                <span class="course-badge is-${course.level.toLowerCase()}">${course.level}</span>
+                ${isLoggedIn ? `<span class="status-badge ${statusClass}">${statusLabel}</span>` : ""}
+              </div>
+              <p class="row-desc muted small">${course.blurb}</p>
+              <ul class="row-meta">
+                <li class="row-rating"><strong>★ ${course.rating}</strong> (${course.reviews.toLocaleString()})</li>
+                <li>${course.duration || "3h 30m"}</li>
+                <li>Instructor: ${course.instructor}</li>
+              </ul>
+              <button type="button" class="more-info" aria-expanded="false" aria-controls="${panelId}">
+                <span class="more-info-label">More Info</span>
+              </button>
+            </div>
+            <div class="row-actions">
+              <a class="btn primary" href="course.html?id=${course.id}">${buttonLabel}</a>
+            </div>
+            <div class="row-modules" id="${panelId}" hidden>
+              <h4 class="modules-title">Modules</h4>
+              <ul class="module-list">${modules}</ul>
+            </div>
+          </article>
+        `;
+      }
 
       const term = courseSearch ? courseSearch.value.trim().toLowerCase() : "";
 
@@ -344,7 +357,9 @@ function buildRow(course, index) {
       if (moreInfo) {
         e.preventDefault();
         const row = moreInfo.closest(".course-row");
-        const panel = row.querySelector(".row-modules");
+        const panel = row ? row.querySelector(".row-modules") : null;
+        if (!panel) return;
+
         const isOpen = !panel.hidden;
         panel.hidden = isOpen;
         moreInfo.setAttribute("aria-expanded", String(!isOpen));
