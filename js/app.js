@@ -153,6 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const mockCourses = [
       {
         title: "Acoustic Fingerpicking 101",
+        rating: 4.8,
+        reviews: 1240,
         status: "progress",
         instructor: "Sarah Jenkins",
         level: "Beginner",
@@ -172,6 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         title: "Electric Rock Solos",
+        rating: 4.6,
+        reviews: 870,
         status: "new",
         instructor: "Mike Torres",
         level: "Intermediate",
@@ -191,6 +195,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         title: "Music Theory for Guitarists",
+        rating: 4.9,
+        reviews: 2310,
         status: "complete",
         instructor: "David Chen",
         level: "Beginner",
@@ -210,6 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         title: "Blues Rhythm Mastery",
+        rating: 4.7,
+        reviews: 540,
         status: "progress",
         instructor: "Emma Lin",
         level: "Advanced",
@@ -229,6 +237,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         title: "Songwriting on Six Strings",
+        rating: 4.5,
+        reviews: 690,
         status: "new",
         instructor: "Marcus Cole",
         level: "Intermediate",
@@ -248,6 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         title: "Jazz Chord Voicings",
+        rating: 4.8,
+        reviews: 320,
         status: "new",
         instructor: "Elena Rostova",
         level: "Advanced",
@@ -276,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const courseSearch = document.getElementById("courseSearch");
     const courseCount = document.getElementById("courseCount");
     const filterBtns = document.querySelectorAll(".filter-btn");
-    const sortBtns = document.querySelectorAll(".sort-btn");
+    const sortSelect = document.getElementById("sortSelect");
 
     let activeLevel = "all";
     let activeSort = "popular";
@@ -294,6 +306,9 @@ document.addEventListener("DOMContentLoaded", () => {
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>',
       heart:
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"></path></svg>',
+      star: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.1 8.6 22 9.5 17 14.4 18.2 21.5 12 18.1 5.8 21.5 7 14.4 2 9.5 8.9 8.6 12 2"></polygon></svg>',
+      chevron:
+        '<svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>',
     };
 
     function buildRow(course, index) {
@@ -322,15 +337,18 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <p class="row-desc muted small">${course.blurb}</p>
             <ul class="row-meta">
+              <li class="row-rating">${icons.star}<strong>${course.rating}</strong> (${course.reviews.toLocaleString()})</li>
               <li>${icons.clock}${formatDuration(course.minutes)}</li>
               <li>${icons.users}${course.learners.toLocaleString()} learners</li>
               <li>${icons.heart}${course.likes} likes</li>
               <li>Instructor: ${course.instructor}</li>
             </ul>
+            <button type="button" class="more-info" aria-expanded="false" aria-controls="${panelId}">
+              <span class="more-info-label">More Info</span>${icons.chevron}
+            </button>
           </div>
           <div class="row-actions">
             <a class="btn primary" href="auth.html">${status.cta}</a>
-            <button type="button" class="btn ghost more-info" aria-expanded="false" aria-controls="${panelId}">More Info</button>
           </div>
           <div class="row-modules" id="${panelId}" hidden>
             <h4 class="modules-title">Modules</h4>
@@ -357,6 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
         visible.sort((a, b) => b.learners - a.learners);
       if (activeSort === "duration")
         visible.sort((a, b) => a.minutes - b.minutes);
+      if (activeSort === "rating") visible.sort((a, b) => b.rating - a.rating);
       if (activeSort === "title")
         visible.sort((a, b) => a.title.localeCompare(b.title));
 
@@ -381,17 +400,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    sortBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        activeSort = btn.dataset.sort;
-        sortBtns.forEach((b) => {
-          const on = b === btn;
-          b.classList.toggle("is-active", on);
-          b.setAttribute("aria-pressed", String(on));
-        });
+    if (sortSelect) {
+      sortSelect.addEventListener("change", () => {
+        activeSort = sortSelect.value;
         renderCourses();
       });
-    });
+    }
 
     if (courseSearch) courseSearch.addEventListener("input", renderCourses);
 
@@ -404,6 +418,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const isOpen = !panel.hidden;
         panel.hidden = isOpen;
         moreInfo.setAttribute("aria-expanded", String(!isOpen));
+        moreInfo.querySelector(".more-info-label").textContent = isOpen
+          ? "More Info"
+          : "Hide Info";
       }
     });
 

@@ -146,37 +146,13 @@
             </div>
 
             <div class="filter-set">
-              <span class="filter-label" id="sortLabel">Sort by</span>
-              <div
-                class="filter-group"
-                role="group"
-                aria-labelledby="sortLabel"
-              >
-                <button
-                  type="button"
-                  class="sort-btn is-active"
-                  data-sort="popular"
-                  aria-pressed="true"
-                >
-                  Most learners
-                </button>
-                <button
-                  type="button"
-                  class="sort-btn"
-                  data-sort="duration"
-                  aria-pressed="false"
-                >
-                  Shortest first
-                </button>
-                <button
-                  type="button"
-                  class="sort-btn"
-                  data-sort="title"
-                  aria-pressed="false"
-                >
-                  A &ndash; Z
-                </button>
-              </div>
+              <label class="filter-label" for="sortSelect">Sort by</label>
+              <select id="sortSelect" class="sort-select">
+                <option value="popular">Most learners</option>
+                <option value="rating">Highest rated</option>
+                <option value="duration">Shortest first</option>
+                <option value="title">A &ndash; Z</option>
+              </select>
             </div>
           </div>
         </div>
