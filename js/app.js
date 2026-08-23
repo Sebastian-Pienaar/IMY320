@@ -418,137 +418,176 @@ function buildRow(course, index) {
   }
 
   const courseMain = document.getElementById("courseMain");
-  if (courseMain) {
-    const params = new URLSearchParams(window.location.search);
-    const course = strumlyCourses.find((c) => c.id === params.get("id"));
+if (courseMain) {
+  const params = new URLSearchParams(window.location.search);
+  const course = strumlyCourses.find((c) => c.id === params.get("id"));
 
-    if (!course) {
-      courseMain.innerHTML = `
-        <div class="course-missing">
-          <h1>Course not found</h1>
-          <p class="muted">That course link is not valid or the course has been removed.</p>
-          <a class="btn primary large" href="index.html#courses">Back to the catalogue</a>
-        </div>
-      `;
-    } else {
-      document.title = `${course.title} - Strumly`;
+  if (!course) {
+    courseMain.innerHTML = `
+      <div class="course-missing">
+        <h1>Course not found</h1>
+        <p class="muted">That course link is not valid or the course has been removed.</p>
+        <a class="btn primary large" href="index.html#courses">Back to the catalogue</a>
+      </div>
+    `;
+  } else {
+    document.title = `${course.title} - Strumly`;
 
-      const statusLabels = {
-        new: "Not started",
-        progress: "In progress",
-        complete: "Completed",
-      };
-      const statusClasses = {
-        new: "is-new",
-        progress: "is-progress",
-        complete: "is-complete",
-      };
+    // 1. Check Login & Completion State
+    const isLoggedIn = Boolean(localStorage.getItem("strumly_user"));
+    const isCompleted = course.status === "complete";
+    const isInProgress = course.status === "progress";
 
-      const fmt = (mins) => {
-        const h = Math.floor(mins / 60);
-        const m = mins % 60;
-        return h ? `${h}h ${m ? m + "m" : ""}`.trim() : `${m}m`;
-      };
+    // 2. Set Context-Aware Labels & Action Text
+    let ctaText = "Create an account to enroll";
+    let priceLabel = "Included with Strumly";
+    let subText = `Full lifetime access to all ${course.modules.length} modules.`;
 
-      const instructor = strumlyInstructors[course.instructor];
-      const totalMinutes = course.modules.reduce(
-        (sum, m) => sum + m.minutes,
-        0,
-      );
+    if (isLoggedIn) {
+      if (isCompleted) {
+        ctaText = "Review Course";
+        priceLabel = "Completed";
+        subText = "You have finished this course. Revisit lessons anytime.";
+      } else if (isInProgress) {
+        ctaText = "Continue Learning";
+        priceLabel = "In Progress";
+        subText = "Pick up right where you left off.";
+      } else {
+        ctaText = "Enroll Now";
+        priceLabel = "Included with Strumly";
+        subText = "Start learning today with full access.";
+      }
+    }
 
-      const syllabus = course.modules
-        .map(
-          (m, i) => `
-            <li class="syllabus-item">
-              <span class="syllabus-num">${String(i + 1).padStart(2, "0")}</span>
-              <span class="syllabus-name">${m.title}</span>
-              <span class="syllabus-time muted">${fmt(m.minutes)}</span>
-            </li>`,
-        )
-        .join("");
+    const statusLabels = {
+      new: "Not started",
+      progress: "In progress",
+      complete: "Completed",
+    };
+    const statusClasses = {
+      new: "is-new",
+      progress: "is-progress",
+      complete: "is-complete",
+    };
 
-      const prereqs = course.prerequisites
-        .map((p) => `<li class="prereq-item">${p}</li>`)
-        .join("");
+    const fmt = (mins) => {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return h ? `${h}h ${m ? m + "m" : ""}`.trim() : `${m}m`;
+    };
 
-      courseMain.innerHTML = `
-        <a class="back-link" href="index.html#courses">&larr; Back to catalogue</a>
+    const instructor = strumlyInstructors[course.instructor];
+    const totalMinutes = course.modules.reduce((sum, m) => sum + m.minutes, 0);
 
-        <header class="course-header">
-          <div class="course-header-body">
-            <div class="course-tags">
-              <span class="course-badge is-${course.level.toLowerCase()}">${course.level}</span>
-              <span class="status-badge ${statusClasses[course.status]}">${statusLabels[course.status]}</span>
-            </div>
-            <h1>${course.title}</h1>
-            <p class="lead muted">${course.blurb}</p>
-            <ul class="course-facts">
-              <li class="row-rating"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.1 8.6 22 9.5 17 14.4 18.2 21.5 12 18.1 5.8 21.5 7 14.4 2 9.5 8.9 8.6 12 2"></polygon></svg><strong>${course.rating}</strong> (${course.reviews.toLocaleString()} ratings)</li>
-              <li>${course.learners.toLocaleString()} learners</li>
-              <li>${fmt(course.minutes)} of lessons</li>
-              <li>Taught by ${course.instructor}</li>
-            </ul>
+    const syllabus = course.modules
+      .map(
+        (m, i) => `
+          <li class="syllabus-item">
+            <span class="syllabus-num">${String(i + 1).padStart(2, "0")}</span>
+            <span class="syllabus-name">${m.title}</span>
+            <span class="syllabus-time muted">${fmt(m.minutes)}</span>
+          </li>`,
+      )
+      .join("");
+
+    const prereqs = course.prerequisites
+      .map((p) => `<li class="prereq-item">${p}</li>`)
+      .join("");
+
+    courseMain.innerHTML = `
+      <a class="back-link" href="index.html#courses">&larr; Back to catalogue</a>
+
+      <header class="course-header">
+        <div class="course-header-body">
+          <div class="course-tags">
+            <span class="course-badge is-${course.level.toLowerCase()}">${course.level}</span>
+            ${isLoggedIn ? `<span class="status-badge ${statusClasses[course.status]}">${statusLabels[course.status]}</span>` : ""}
           </div>
-          <img class="course-header-img" src="${course.image}" alt="${course.title}">
-        </header>
+          <h1>${course.title}</h1>
+          <p class="lead muted">${course.blurb}</p>
+          <ul class="course-facts">
+            <li class="row-rating"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.1 8.6 22 9.5 17 14.4 18.2 21.5 12 18.1 5.8 21.5 7 14.4 2 9.5 8.9 8.6 12 2"></polygon></svg><strong>${course.rating}</strong> (${course.reviews.toLocaleString()} ratings)</li>
+            <li>${course.learners.toLocaleString()} learners</li>
+            <li>${fmt(course.minutes)} of lessons</li>
+            <li>Taught by ${course.instructor}</li>
+          </ul>
+        </div>
+        <img class="course-header-img" src="${course.image}" alt="${course.title}">
+      </header>
 
-        <div class="course-layout">
-          <div class="course-content">
-            <section class="course-section">
-              <h2>About this course</h2>
-              <p>${course.description}</p>
-            </section>
+      <div class="course-layout">
+        <div class="course-content">
+          <section class="course-section">
+            <h2>About this course</h2>
+            <p>${course.description}</p>
+          </section>
 
-            <section class="course-section">
-              <h2>Curriculum</h2>
-              <p class="muted small">${course.modules.length} modules &middot; ${fmt(totalMinutes)} total</p>
-              <ol class="syllabus-list">${syllabus}</ol>
-            </section>
+          <section class="course-section">
+            <h2>Curriculum</h2>
+            <p class="muted small">${course.modules.length} modules &middot; ${fmt(totalMinutes)} total</p>
+            <ol class="syllabus-list">${syllabus}</ol>
+          </section>
 
-            <section class="course-section">
-              <h2>Prerequisites</h2>
-              <ul class="prereq-list">${prereqs}</ul>
-            </section>
+          <section class="course-section">
+            <h2>Prerequisites</h2>
+            <ul class="prereq-list">${prereqs}</ul>
+          </section>
 
-            <section class="course-section">
-              <h2>Your instructor</h2>
-              <div class="instructor-card">
-                <img class="instructor-img" src="${instructor.image}" alt="${course.instructor}">
-                <div>
-                  <h3>${course.instructor}</h3>
-                  <span class="team-role">${instructor.role}</span>
-                  <p class="muted">${instructor.bio}</p>
-                </div>
+          <section class="course-section">
+            <h2>Your instructor</h2>
+            <div class="instructor-card">
+              <img class="instructor-img" src="${instructor.image}" alt="${course.instructor}">
+              <div>
+                <h3>${course.instructor}</h3>
+                <span class="team-role">${instructor.role}</span>
+                <p class="muted">${instructor.bio}</p>
               </div>
-            </section>
-          </div>
-
-          <aside class="enroll-panel">
-            <span class="enroll-price">Included with Strumly</span>
-            <p class="muted small">Full lifetime access to all ${course.modules.length} modules.</p>
-            <button type="button" class="btn primary enroll-btn" id="enrollBtn">Enroll Now</button>
-            <button type="button" class="btn ghost save-btn" id="saveBtn">Save for Later</button>
-            <ul class="enroll-facts muted small">
-              <li>${fmt(totalMinutes)} of video lessons</li>
-              <li>Learn at your own pace</li>
-              <li>Certificate on completion</li>
-            </ul>
-          </aside>
+            </div>
+          </section>
         </div>
-      `;
 
-      const enrollBtn = document.getElementById("enrollBtn");
-      const saveBtn = document.getElementById("saveBtn");
+        <aside class="enroll-panel">
+          <span class="enroll-price">${priceLabel}</span>
+          <p class="muted small">${subText}</p>
+          <button type="button" class="btn primary enroll-btn" id="enrollBtn">${ctaText}</button>
+          ${!isCompleted ? `<button type="button" class="btn ghost save-btn" id="saveBtn">Save for Later</button>` : ""}
+          <ul class="enroll-facts muted small">
+            <li>${fmt(totalMinutes)} of video lessons</li>
+            <li>Learn at your own pace</li>
+            <li>Certificate on completion</li>
+          </ul>
+        </aside>
+      </div>
+    `;
 
+    const enrollBtn = document.getElementById("enrollBtn");
+    const saveBtn = document.getElementById("saveBtn");
+
+    if (enrollBtn) {
       enrollBtn.addEventListener("click", () => {
-        showToast(`Enrolled in '${course.title}'! (Simulated)`);
+        if (!isLoggedIn) {
+          // Redirect unauthenticated user to the login/register page
+          showToast("Redirecting to login...");
+          setTimeout(() => {
+            window.location.href = "auth.html";
+          }, 1000);
+        } else {
+          showToast(`${ctaText} clicked for '${course.title}'! (Simulated)`);
+        }
       });
+    }
 
+    if (saveBtn) {
       saveBtn.addEventListener("click", () => {
-        showToast(`'${course.title}' saved to your list. (Simulated)`);
+        if (!isLoggedIn) {
+          showToast("Please log in to save courses to your list.");
+        } else {
+          showToast(`'${course.title}' saved to your list. (Simulated)`);
+        }
       });
     }
   }
+}
 
   // --- 7. Simulated Search Functionality ---
   const searchInput = document.getElementById("globalSearch");
