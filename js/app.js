@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const mockCourses = [
       {
         title: "Acoustic Fingerpicking 101",
+        status: "progress",
         instructor: "Sarah Jenkins",
         level: "Beginner",
         blurb:
@@ -162,9 +163,16 @@ document.addEventListener("DOMContentLoaded", () => {
         likes: 612,
         image:
           "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=600&q=80",
+        modules: [
+          { title: "Hand position and thumb independence", minutes: 45 },
+          { title: "Travis picking pattern", minutes: 60 },
+          { title: "Adding melody notes", minutes: 75 },
+          { title: "Playing your first arrangement", minutes: 90 },
+        ],
       },
       {
         title: "Electric Rock Solos",
+        status: "new",
         instructor: "Mike Torres",
         level: "Intermediate",
         blurb:
@@ -174,9 +182,16 @@ document.addEventListener("DOMContentLoaded", () => {
         likes: 498,
         image:
           "https://images.unsplash.com/photo-1550291652-6ea9114a47b1?w=600&q=80",
+        modules: [
+          { title: "Pentatonic shapes across the neck", minutes: 70 },
+          { title: "Bending in tune", minutes: 55 },
+          { title: "Vibrato and sustain control", minutes: 65 },
+          { title: "Building a solo over a backing track", minutes: 95 },
+        ],
       },
       {
         title: "Music Theory for Guitarists",
+        status: "complete",
         instructor: "David Chen",
         level: "Beginner",
         blurb:
@@ -186,9 +201,16 @@ document.addEventListener("DOMContentLoaded", () => {
         likes: 940,
         image:
           "https://images.unsplash.com/photo-1507838153414-b4b713384a76?w=600&q=80",
+        modules: [
+          { title: "Notes on the fretboard", minutes: 40 },
+          { title: "Intervals and triads", minutes: 55 },
+          { title: "The CAGED system", minutes: 80 },
+          { title: "Keys and chord families", minutes: 60 },
+        ],
       },
       {
         title: "Blues Rhythm Mastery",
+        status: "progress",
         instructor: "Emma Lin",
         level: "Advanced",
         blurb:
@@ -198,9 +220,16 @@ document.addEventListener("DOMContentLoaded", () => {
         likes: 356,
         image:
           "https://images.unsplash.com/photo-1541689592655-f5f52825a3b8?w=600&q=80",
+        modules: [
+          { title: "The 12-bar form and shuffle feel", minutes: 60 },
+          { title: "Dominant 7th voicings", minutes: 70 },
+          { title: "Turnarounds and stops", minutes: 75 },
+          { title: "Comping behind a soloist", minutes: 85 },
+        ],
       },
       {
         title: "Songwriting on Six Strings",
+        status: "new",
         instructor: "Marcus Cole",
         level: "Intermediate",
         blurb:
@@ -210,9 +239,16 @@ document.addEventListener("DOMContentLoaded", () => {
         likes: 421,
         image:
           "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&q=80",
+        modules: [
+          { title: "Progressions that carry a song", minutes: 45 },
+          { title: "Verse, chorus and bridge", minutes: 50 },
+          { title: "Writing a singable melody", minutes: 55 },
+          { title: "Finishing and arranging", minutes: 65 },
+        ],
       },
       {
         title: "Jazz Chord Voicings",
+        status: "new",
         instructor: "Elena Rostova",
         level: "Advanced",
         blurb:
@@ -222,8 +258,20 @@ document.addEventListener("DOMContentLoaded", () => {
         likes: 289,
         image:
           "https://images.unsplash.com/photo-1524230572899-a752b3835840?w=600&q=80",
+        modules: [
+          { title: "Shell voicings and guide tones", minutes: 80 },
+          { title: "Drop-2 shapes", minutes: 95 },
+          { title: "Extensions and alterations", minutes: 110 },
+          { title: "Comping through a standard", minutes: 125 },
+        ],
       },
     ];
+
+    const statusMeta = {
+      new: { label: "Not started", cls: "is-new", cta: "Start Learning" },
+      progress: { label: "In progress", cls: "is-progress", cta: "Continue" },
+      complete: { label: "Completed", cls: "is-complete", cta: "View Course" },
+    };
 
     const courseSearch = document.getElementById("courseSearch");
     const courseCount = document.getElementById("courseCount");
@@ -248,7 +296,19 @@ document.addEventListener("DOMContentLoaded", () => {
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"></path></svg>',
     };
 
-    function buildRow(course) {
+    function buildRow(course, index) {
+      const status = statusMeta[course.status];
+      const panelId = `modules-${index}`;
+      const modules = course.modules
+        .map(
+          (m, i) => `
+              <li class="module-item">
+                <span class="module-name">${i + 1}. ${m.title}</span>
+                <span class="module-time">${formatDuration(m.minutes)}</span>
+              </li>`,
+        )
+        .join("");
+
       return `
         <article class="course-row">
           <div class="row-thumb">
@@ -257,7 +317,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="row-body">
             <div class="row-head">
               <h3><a class="row-link" href="auth.html">${course.title}</a></h3>
-              <span class="course-badge">${course.level}</span>
+              <span class="course-badge is-${course.level.toLowerCase()}">${course.level}</span>
+              <span class="status-badge ${status.cls}">${status.label}</span>
             </div>
             <p class="row-desc muted small">${course.blurb}</p>
             <ul class="row-meta">
@@ -268,8 +329,12 @@ document.addEventListener("DOMContentLoaded", () => {
             </ul>
           </div>
           <div class="row-actions">
-            <a class="btn primary" href="auth.html">Start Learning</a>
-            <button type="button" class="btn ghost more-info" data-title="${course.title}">More Info</button>
+            <a class="btn primary" href="auth.html">${status.cta}</a>
+            <button type="button" class="btn ghost more-info" aria-expanded="false" aria-controls="${panelId}">More Info</button>
+          </div>
+          <div class="row-modules" id="${panelId}" hidden>
+            <h4 class="modules-title">Modules</h4>
+            <ul class="module-list">${modules}</ul>
           </div>
         </article>
       `;
@@ -334,9 +399,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const moreInfo = e.target.closest(".more-info");
       if (moreInfo) {
         e.preventDefault();
-        showToast(
-          `Course details for '${moreInfo.dataset.title}' coming soon.`,
-        );
+        const row = moreInfo.closest(".course-row");
+        const panel = row.querySelector(".row-modules");
+        const isOpen = !panel.hidden;
+        panel.hidden = isOpen;
+        moreInfo.setAttribute("aria-expanded", String(!isOpen));
       }
     });
 

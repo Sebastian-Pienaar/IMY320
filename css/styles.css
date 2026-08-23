@@ -594,17 +594,49 @@ a {
   position: relative;
 }
 
-.course-badge {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--muted);
+.course-badge,
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+
+.course-badge {
+  color: #081020;
+  background: var(--surface);
+}
+.course-badge.is-beginner {
+  background: var(--accent-2);
+}
+.course-badge.is-intermediate {
+  background: var(--accent);
+}
+.course-badge.is-advanced {
+  background: #a78bfa;
+}
+.status-badge {
+  color: var(--muted);
+  border: 1px solid currentColor;
+}
+.status-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-badge.is-progress {
+  color: var(--accent);
+}
+.status-badge.is-complete {
+  color: var(--accent-2);
 }
 
 .list-toolbar {
@@ -710,6 +742,7 @@ a {
 .course-row {
   position: relative;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 20px;
   padding: 16px;
@@ -803,6 +836,43 @@ a {
   justify-content: center;
   white-space: nowrap;
 }
+.row-modules {
+  flex-basis: 100%;
+  position: relative;
+  z-index: 1;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.modules-title {
+  margin: 0 0 8px 0;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+.module-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.module-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.module-item:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.02);
+}
+.module-time {
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .list-empty {
   padding: 40px 16px;
   text-align: center;
