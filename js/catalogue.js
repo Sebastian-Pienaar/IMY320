@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   let activeLevel = params.get("level") || "all";
   let savedOnly = params.get("saved") === "1";
-  let mineOnly = params.get("mine") === "1" && Strumly.isLoggedIn();
   let activeSort = "popular";
   if (params.get("q")) courseSearch.value = params.get("q");
 
@@ -72,8 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         course.title.toLowerCase().includes(term) ||
         course.instructor.toLowerCase().includes(term);
       const matchesSaved = !savedOnly || saved.includes(course.id);
-      const matchesMine = !mineOnly || Strumly.courseStatus(course) !== "new";
-      return matchesLevel && matchesTerm && matchesSaved && matchesMine;
+      return matchesLevel && matchesTerm && matchesSaved;
     });
 
     const sorters = {
@@ -120,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   savedToggle.addEventListener("click", () => {
     savedOnly = !savedOnly;
-    mineOnly = false;
     syncControls();
     renderCourses();
   });
@@ -130,10 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCourses();
   });
 
-  courseSearch.addEventListener("input", () => {
-    mineOnly = false;
-    renderCourses();
-  });
+  courseSearch.addEventListener("input", renderCourses);
 
   syncControls();
   renderCourses();
@@ -142,14 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Logged-in learners get "Continue learning" instead of a sign-up prompt
   function personaliseHero() {
     const primary = document.getElementById("heroPrimary");
-    const secondary = document.getElementById("heroSecondary");
     const proof = document.getElementById("heroProof");
     if (!primary || !Strumly.isLoggedIn()) return;
 
     const target = Strumly.resumeTarget();
     proof.classList.add("is-personal");
-    secondary.textContent = "My courses";
-    secondary.href = "index.html?mine=1#courses";
 
     if (target) {
       const { course, index } = target;
@@ -159,6 +150,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       primary.href = "#courses";
       primary.querySelector("span").textContent = "Find your next course";
+      // Both buttons would go to the course list, so keep just one
+      document.getElementById("heroSecondary").remove();
       proof.remove();
     }
   }
