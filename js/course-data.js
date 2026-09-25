@@ -1,3 +1,4 @@
+/* Course and instructor data (stands in for a backend). Used by every page. */
 const strumlyInstructors = {
   "Marcus Cole": {
     role: "Lead Acoustic Instructor",
@@ -22,10 +23,9 @@ const strumlyInstructors = {
 const strumlyCourses = [
   {
     id: "acoustic-fingerpicking-101",
-    title: "Acoustic Fingerpicking 101",
+    title: "Acoustic Beginner",
     rating: 4.8,
     reviews: 1240,
-    status: "progress",
     instructor: "Marcus Cole",
     level: "Beginner",
     blurb:
@@ -54,7 +54,6 @@ const strumlyCourses = [
     title: "Electric Rock Solos",
     rating: 4.6,
     reviews: 870,
-    status: "new",
     instructor: "Julian Vance",
     level: "Intermediate",
     blurb:
@@ -83,7 +82,6 @@ const strumlyCourses = [
     title: "Music Theory for Guitarists",
     rating: 4.9,
     reviews: 2310,
-    status: "complete",
     instructor: "Elena Rostova",
     level: "Beginner",
     blurb:
@@ -112,7 +110,6 @@ const strumlyCourses = [
     title: "Blues Rhythm Mastery",
     rating: 4.7,
     reviews: 540,
-    status: "progress",
     instructor: "Julian Vance",
     level: "Advanced",
     blurb:
@@ -141,7 +138,6 @@ const strumlyCourses = [
     title: "Songwriting on Six Strings",
     rating: 4.5,
     reviews: 690,
-    status: "new",
     instructor: "Marcus Cole",
     level: "Intermediate",
     blurb:
@@ -170,7 +166,6 @@ const strumlyCourses = [
     title: "Jazz Chord Voicings",
     rating: 4.8,
     reviews: 320,
-    status: "new",
     instructor: "Elena Rostova",
     level: "Advanced",
     blurb:

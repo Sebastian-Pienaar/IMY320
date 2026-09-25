@@ -1,0 +1,37 @@
+﻿UEQ Research report 2: Chess.com
+  
+
+  
+
+
+
+
+
+
+
+
+
+High scoring criteria: 
+
+
+Clear, efficient and easy: The lesson completion screen is uncluttered and clearly communicates success with encouraging text (“Way to go! Continue your...”). The large and high contrast green “Next lesson” button ensures that moving forward requires minimal cognitive effort.
+
+Lower-scoring criteria:
+
+
+Moderately obstructive: The screen clearly directs the user to the next step, but it omits lesson-specific feedback (like performance/lesson stats or progress) to inform learners how well they performed or what concepts they just learned.
+
+
+Neutral score on excitement, interesting, inventive, leading edge: The screen scores neutral in these 4 areas, because although it features a graduation cap surrounded by confetti, it lacks dynamic celebration or reward mechanism, which fails to create an emotional peak or to make it “pop”.
+
+
+Design guidelines for our project:
+
+
+Include dynamic celebratory animations (animated guitar picks, badge unlocks, etc.) to make things pop.
+
+
+Display concise performance summaries (time spent, progress, skill points, etc.) on the completion screen before the user navigates away.
+
+
+Follow Chess.com’s use of the frictionless “Next lesson” CTA button that lets users continue their momentum. Also include a “close” icon on the screen so that users can return to the course page or continue forward at their own pace.

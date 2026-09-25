@@ -1,125 +1,133 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Authentication - Strumly</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* Fixes for the progress bar and label wrapping */
-    .progress[aria-hidden="true"] { display: none !important; }
-    .progress[aria-hidden="false"] { display: block !important; width: 100%; margin-top: 12px; }
-    .submit-row { display: block; }
-    .btn.next { width: 100%; }
-    .remember { white-space: nowrap; }
-    
-    /* Fixes for the tab highlights on a white card */
-    .mode {
-        border: 1px solid #e5e7eb !important;
-        color: #6b7280 !important;
-        background: #f9fafb !important;
-        transition: all 0.2s ease;
-    }
-    .mode:hover {
-        background: #f3f4f6 !important;
-    }
-    /* Updated: Light orange highlight to match brand accent */
-    .mode.active {
-        background: #ffedd5 !important; 
-        color: #c2410c !important;
-        border-color: #fdba74 !important;
-        font-weight: 700 !important;
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Log in or sign up | Strumly</title>
+    <meta name="description" content="Log in or create a free Strumly account." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff7a1a' d='M12 1C5.5 1 1 3.8 1 8.3 1 14.4 7.6 21.6 12 23c4.4-1.4 11-8.6 11-14.7C23 3.8 18.5 1 12 1z'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    body.auth-page {
-  background: #061021;
-  min-height: 100vh;
-}
-  </style>
-</head>
-<body class="auth-page">
-    <!--
- <header class="nav">
-    <div class="nav-inner">
-      <a class="logo" href="index.html">Strumly</a>
-      <div class="search-wrap">
-        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        <input id="globalSearch" class="search" placeholder="Search courses, instructors, songs..." aria-label="Search" />
+    <header class="nav">
+      <div class="nav-inner container">
+        <a class="logo" href="index.html" aria-label="Strumly home">
+          <svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1C5.5 1 1 3.8 1 8.3 1 14.4 7.6 21.6 12 23c4.4-1.4 11-8.6 11-14.7C23 3.8 18.5 1 12 1z"/></svg>Strumly
+        </a>
+        <button
+          type="button"
+          class="nav-toggle"
+          aria-expanded="false"
+          aria-controls="navMenu"
+          aria-label="Open menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-menu" id="navMenu">
+          <form class="search-wrap" role="search" action="index.html">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              class="search"
+              type="search"
+              name="q"
+              placeholder="Search courses or instructors"
+              aria-label="Search courses or instructors"
+            />
+          </form>
+          <nav class="nav-links" aria-label="Main">
+            <a href="index.html" data-nav="home">Home</a>
+            <a href="index.html#courses" data-nav="courses">Courses</a>
+            <a href="about.html" data-nav="about">About</a>
+          </nav>
+          <div class="nav-auth">
+            <a href="auth.html" class="btn btn-ghost btn-sm" data-auth="login">Log in</a>
+            <a href="auth.html?mode=register" class="btn btn-primary btn-sm" data-auth="register">Sign up</a>
+          </div>
+        </div>
       </div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="index.html#features">Features</a>
-      </nav>
-    </div>
-  </header> -->
+    </header>
 
-  <main class="auth-container">
-    <div class="auth-center">
-      <div class="brand"><a class="logo" href="index.html">Strumly</a></div>
 
-      <div class="auth-card centered">
-        <div class="card-inner">
-          
-          <div class="mode-toggle">
-            <button type="button" id="toggleLogin" class="mode active">Log In</button>
-            <button type="button" id="toggleRegister" class="mode">Register</button>
+    <main id="main" class="auth-main">
+      <div class="container">
+        <div class="auth-card">
+          <div class="mode-toggle" role="group" aria-label="Choose log in or register">
+            <button type="button" id="toggleLogin" class="mode" aria-pressed="true">Log in</button>
+            <button type="button" id="toggleRegister" class="mode" aria-pressed="false">Register</button>
           </div>
 
-          <h2 id="authHeading">Welcome Back!</h2>
+          <h1 id="authHeading">Welcome back!</h1>
+          <p class="auth-sub" id="authSub">Pick up right where you left off.</p>
 
           <form id="authForm">
-            <label for="email">E-mail address</label>
-            <input id="email" type="email" required />
-
-            <label for="password">Password</label>
-            <div class="pw-wrap">
-              <input id="password" type="password" minlength="6" required />
-              <button type="button" id="pwToggle" class="pw-toggle">Show</button>
-            </div>
-            
-            <div style="text-align: right; margin-top: 6px;">
-              <a href="#" id="forgot" class="small muted">Forgot Password?</a>
+            <div class="field">
+              <label for="email">Email address</label>
+              <input id="email" class="input" type="email" autocomplete="email" required />
             </div>
 
-            <div class="submit-row">
-              <button id="submitAuth" class="btn next">Log In</button>
-              <div id="submitProgress" class="progress" aria-hidden="true"><div class="progress-bar"></div></div>
+            <div class="field">
+              <div class="field-row">
+                <label for="password">Password</label>
+                <button type="button" id="forgot" class="link">Forgot password?</button>
+              </div>
+              <div class="pw-wrap">
+                <input id="password" class="input" type="password" minlength="6" autocomplete="current-password" required aria-describedby="pwHint" />
+                <button type="button" id="pwToggle" class="pw-toggle" aria-pressed="false" aria-label="Show password">Show</button>
+              </div>
+              <p id="pwHint" class="hint muted small">At least 6 characters.</p>
             </div>
 
-            <div class="row between small" style="margin-top:14px; margin-bottom: 10px;">
-              <label class="remember"><input type="checkbox" id="remember"> Remember me</label>
-              <a href="#" id="needHelp">Need Help?</a>
+            <label class="remember"><input type="checkbox" id="remember" /> Remember me</label>
+
+            <button id="submitAuth" type="submit" class="btn btn-primary btn-lg btn-block">Log in</button>
+            <div id="submitProgress" class="submit-progress" hidden>
+              <div class="progress-track"><div class="progress-fill" data-width="100" style="transition-duration: 1.2s"></div></div>
             </div>
 
-            <div class="muted small" style="margin-top:18px">Or sign in using:</div>
+            <p class="divider">or continue with</p>
             <div class="sso-row">
-              <button class="sso-box" data-provider="Google" aria-label="Google" type="button">
-                <svg width="18" height="18" viewBox="0 0 533.5 544.3" xmlns="http://www.w3.org/2000/svg"><path fill="#4285F4" d="M533.5 278.4c0-18.5-1.6-36.3-4.7-53.6H272v101.6h146.9c-6.3 34.1-25.3 62.9-53.9 82.1v68.1h87c50.9-46.9 80.5-116 80.5-198.2z"/><path fill="#34A853" d="M272 544.3c73 0 134.2-24.2 178.9-65.6l-87-68.1c-24.2 16.2-55.3 25.9-91.9 25.9-70.6 0-130.4-47.6-151.8-111.5H31.8v69.8C76.1 483 167.7 544.3 272 544.3z"/><path fill="#FBBC05" d="M120.2 326.9c-10.9-32.8-10.9-68.3 0-101.1V156h-88.4C9.6 206.7 0 238.8 0 272s9.6 65.3 31.8 116.1l88.4-61.2z"/><path fill="#EA4335" d="M272 107.7c39.6 0 75.4 13.6 103.6 40.3l77.7-77.7C403.1 24.8 341.9 0 272 0 167.7 0 76.1 61.3 31.8 156l88.4 69.8C141.6 155.3 201.4 107.7 272 107.7z"/></svg>
-              </button>
-              <button class="sso-box" data-provider="Microsoft" aria-label="Microsoft" type="button">
-                <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" fill="#F35325"/><rect x="13" y="3" width="8" height="8" fill="#81BC06"/><rect x="3" y="13" width="8" height="8" fill="#05A6F0"/><rect x="13" y="13" width="8" height="8" fill="#FFBA08"/></svg>
-              </button>
-              <button class="sso-box" data-provider="LinkedIn" aria-label="LinkedIn" type="button">
-                <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#0A66C2" d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.08 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v14H0V8zm7.5 0h4.7v2h.1c.66-1.25 2.27-2.5 4.7-2.5C22.6 7.5 24 9.6 24 13.2V22H19v-7.1c0-1.7 0-3.9-2.4-3.9-2.4 0-2.7 1.8-2.7 3.8V22H7.5V8z"/></svg>
-              </button>
-              <button class="sso-box" data-provider="Facebook" aria-label="Facebook" type="button">
-                <svg width="18" height="18" viewBox="0 0 320 512" xmlns="http://www.w3.org/2000/svg"><path fill="#1877F2" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>
-              </button>
-              <button class="sso-box" data-provider="Apple" aria-label="Apple" type="button">
-                <svg width="18" height="18" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg"><path fill="#111" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-              </button>
+                <button type="button" class="sso-box" data-provider="Google" aria-label="Continue with Google"><svg width="20" height="20" viewBox="0 0 533.5 544.3" aria-hidden="true"><path fill="#4285F4" d="M533.5 278.4c0-18.5-1.6-36.3-4.7-53.6H272v101.6h146.9c-6.3 34.1-25.3 62.9-53.9 82.1v68.1h87c50.9-46.9 80.5-116 80.5-198.2z"/><path fill="#34A853" d="M272 544.3c73 0 134.2-24.2 178.9-65.6l-87-68.1c-24.2 16.2-55.3 25.9-91.9 25.9-70.6 0-130.4-47.6-151.8-111.5H31.8v69.8C76.1 483 167.7 544.3 272 544.3z"/><path fill="#FBBC05" d="M120.2 326.9c-10.9-32.8-10.9-68.3 0-101.1V156h-88.4C9.6 206.7 0 238.8 0 272s9.6 65.3 31.8 116.1l88.4-61.2z"/><path fill="#EA4335" d="M272 107.7c39.6 0 75.4 13.6 103.6 40.3l77.7-77.7C403.1 24.8 341.9 0 272 0 167.7 0 76.1 61.3 31.8 156l88.4 69.8C141.6 155.3 201.4 107.7 272 107.7z"/></svg></button>
+                <button type="button" class="sso-box" data-provider="Microsoft" aria-label="Continue with Microsoft"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" fill="#F35325"/><rect x="13" y="3" width="8" height="8" fill="#81BC06"/><rect x="3" y="13" width="8" height="8" fill="#05A6F0"/><rect x="13" y="13" width="8" height="8" fill="#FFBA08"/></svg></button>
+                <button type="button" class="sso-box" data-provider="LinkedIn" aria-label="Continue with LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#0A66C2" d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.08 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v14H0V8zm7.5 0h4.7v2h.1c.66-1.25 2.27-2.5 4.7-2.5C22.6 7.5 24 9.6 24 13.2V22H19v-7.1c0-1.7 0-3.9-2.4-3.9-2.4 0-2.7 1.8-2.7 3.8V22H7.5V8z"/></svg></button>
+                <button type="button" class="sso-box" data-provider="Facebook" aria-label="Continue with Facebook"><svg width="20" height="20" viewBox="0 0 320 512" aria-hidden="true"><path fill="#1877F2" d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg></button>
+                <button type="button" class="sso-box" data-provider="Apple" aria-label="Continue with Apple"><svg width="20" height="20" viewBox="0 0 384 512" aria-hidden="true"><path fill="#111" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg></button>
             </div>
 
-            <p class="muted tiny" style="margin-top: 14px;">By continuing, you accept our <a href="#" style="color:var(--accent)">Terms of Use</a> and <a href="#" style="color:var(--accent)">Privacy Policy</a>.</p>
+            <p class="terms">
+              By continuing, you accept our Terms of Use and Privacy Policy.
+            </p>
           </form>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script src="js/app.js"></script>
-</body>
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>&copy; <span data-year>2026</span> Strumly. An IMY 320 project. &middot; Photos from Unsplash &middot; Icons from Feather Icons</p>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="legal.html#terms">Terms</a>
+          <a href="legal.html#privacy">Privacy</a>
+          <a href="legal.html#security">Security</a>
+          <a href="mailto:hello@strumly.co.za">Contact</a>
+        </nav>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="js/course-data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+  </body>
 </html>

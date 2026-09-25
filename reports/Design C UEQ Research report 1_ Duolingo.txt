@@ -1,0 +1,41 @@
+﻿UEQ Research report 1: Duolingo
+
+
+  
+
+
+
+  
+
+
+
+High scoring criteria: 
+
+
+Clear, efficient, and easy: The lesson completion screen is very focused and clear. The high contrast “claim XP“ button ensures that the user’s next step is obvious and requires no/very little cognitive effort to locate.
+
+Exciting and interesting: This screen is a very good example of the peak-end rule, where instead of a boring, admin-like “lesson complete” message, it adds some personality (“look at that combo!”), and the playful illustration of Duo (the owl) and colourful stats panels eliminate the bland feeling that the client statement aims to avoid by making everything “pop” more.
+
+
+Lower-scoring criteria:
+
+
+Moderately obstructive: The primary call-to-action button is not the typical “continue” (or similar) button, but a gamified “claim XP” button. While this is fun, we think that this traps the user in a metagame loop, where instead of helping the user navigate back to their lesson dashboard or start the next lesson, they are forced to interact with the reward mechanic first. For a user who just wants to keep learning, this extra step can act as a minor obstacle.
+
+
+Conventional and usual: Although the playful illustration of Duo and the “Look at that combo” text are engaging, the overall layout is quite conventional. However, this is not necessarily a bad thing, as sticking to UX laws that work is probably a safer option than creating something new.
+
+
+Design guidelines for our project:
+
+
+The completion of a lesson should contain celebratory visual feedback (such as animated guitar graphics and encouraging text messages) to eliminate blandness and make it pop.
+
+
+Incorporate colourful stat panels (streaks, XP, etc) to give learners a rewarding sense of accomplishment when lessons end.
+
+
+Ensure that the primary actions support the user’s momentum by showing clear navigation like “Start next lesson” or “Return to dashboard” instead of forcing users to collect rewards as the primary call-to-action button.
+
+
+Use a focused layout with high contrast button styling to keep the interface clear and easy to navigate.

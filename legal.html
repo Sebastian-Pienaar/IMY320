@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Course | Strumly</title>
-    <meta name="description" content="Course details, curriculum and instructor." />
+    <title>Terms, privacy and security | Strumly</title>
+    <meta name="description" content="How the Strumly prototype handles your data." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -47,7 +47,7 @@
           </form>
           <nav class="nav-links" aria-label="Main">
             <a href="index.html" data-nav="home">Home</a>
-            <a href="index.html#courses" data-nav="courses" aria-current="page">Courses</a>
+            <a href="index.html#courses" data-nav="courses">Courses</a>
             <a href="about.html" data-nav="about">About</a>
           </nav>
           <div class="nav-auth">
@@ -59,8 +59,36 @@
     </header>
 
 
-    <main id="main" class="course-page">
-      <div id="courseMain" class="container"></div>
+    <main id="main" class="settings-page">
+      <div class="container settings-container legal">
+        <h1>Terms, privacy and security</h1>
+
+        <section class="settings-group" id="terms" aria-labelledby="termsTitle">
+          <h2 id="termsTitle">Terms of use</h2>
+          <p class="muted">
+            Strumly is a student prototype built for IMY 320. Courses, ratings
+            and instructors are sample content, and lessons do not contain real
+            video. Use the site to explore the design.
+          </p>
+        </section>
+
+        <section class="settings-group" id="privacy" aria-labelledby="privacyTitle">
+          <h2 id="privacyTitle">Privacy</h2>
+          <p class="muted">
+            Strumly has no server. Your email, progress, saved courses and
+            settings are stored only in this browser&rsquo;s local storage and
+            are never sent anywhere. Clearing your browser data removes them.
+          </p>
+        </section>
+
+        <section class="settings-group" id="security" aria-labelledby="securityTitle">
+          <h2 id="securityTitle">Security</h2>
+          <p class="muted">
+            Because sign-in is simulated, passwords are not checked or stored.
+        
+          </p>
+        </section>
+      </div>
     </main>
 
     <footer class="footer">
@@ -79,7 +107,5 @@
 
     <script src="js/course-data.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/confetti.js"></script>
-    <script src="js/course.js"></script>
   </body>
 </html>

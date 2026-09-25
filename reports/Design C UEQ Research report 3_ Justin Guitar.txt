@@ -1,0 +1,44 @@
+﻿UEQ Research report 3: Justin Guitar
+  
+
+—------------------------------------------------------------------------------------------------------------------------
+  
+
+
+
+
+
+
+
+
+
+High scoring criteria: 
+
+
+Relatively easy: Completing a lesson is fairly straightforward and easy to understand. Basic visual confirmation messages (red arrows) give you the necessary basic information after completing the lesson, but nothing more.
+
+Lower-scoring criteria:
+
+
+Relatively obstructive and confusing: Minimal guidance is provided once a lesson is completed. The completion feedback is split between 2 separate areas, and there is no extra performance information provided such as progress, skill points, etc. to validate the learner’s progress or summarize what was achieved.
+
+
+Inefficient: When a lesson ends, there is no clear CTA button (such as “Next lesson”). Users have to manually locate the next lesson, creating friction in user flow.
+
+
+Boring, not interesting, conventional, usual: The platform completely misses the peak-end rule. Finishing a long guitar lesson yields only a subtle button state-change and generic green alert text. The lack of celebratory visuals, animations or milestone rewards is the exact blandness the client wants to avoid, failing to provide the “pop”.
+
+
+Design guidelines for our project:
+
+
+Avoid Justin Guitar’s bland and static completion feedback by using rewarding, high energy celebrations to create a satisfying emotional peak.
+
+
+Add progress feedback such as practice duration, XP, or lesson-specific things mastered.
+
+
+Avoid navigation friction by providing clear, high contrast CTA buttons (e.g “Next lesson”) within the completion prompt itself so users have the option to advance without having to search through course lists.
+
+
+Combine all completion feedback into a single container rather than having scattered and disconnected components across the screen.
