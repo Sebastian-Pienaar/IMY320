@@ -24,7 +24,7 @@ const Strumly = (() => {
     },
   };
 
-  // --- Storage helpers (wrapped so private browsing never breaks the page) ---
+  //Storage helpers (wrapped so private browsing never breaks the page) ---
   function read(key, fallback) {
     try {
       const raw = localStorage.getItem(key);
@@ -38,7 +38,7 @@ const Strumly = (() => {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      /* storage unavailable: changes last for this page view only */
+      //storage unavailable: changes last for this page view only
     }
   }
 
@@ -224,7 +224,7 @@ const Strumly = (() => {
     return next.includes(id);
   }
 
-  // --- Toast (announced to screen readers via role="status") ---
+  // --- Toast
   let toastTimer;
   function toast(message, tone = "info") {
     const el = document.getElementById("toast");

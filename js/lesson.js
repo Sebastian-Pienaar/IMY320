@@ -1,4 +1,4 @@
-/* Lesson player + the completion celebration (the peak-end moment).
+/* Lesson player + the completion celebration
    All completion feedback lives in one dialog: celebration, stats, skill
    learned and a clear "next lesson" call to action. */
 document.addEventListener("DOMContentLoaded", () => {

@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Save for later: a real toggle (aria-pressed) that works with or without an account
+  // Save for later: a real toggle that works with or without an account
   const saveBtn = document.getElementById("saveBtn");
   saveBtn.addEventListener("click", () => {
     const nowSaved = Strumly.toggleSaved(course.id);
