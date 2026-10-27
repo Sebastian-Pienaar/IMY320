@@ -217,12 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
       fresh.focus();
       savedCount.textContent = Strumly.savedIds().length;
     }
-    Strumly.toast(
-      nowSaved
-        ? `Saved “${course.title}”. Find it any time under Saved in the menu.`
-        : `Removed “${course.title}” from saved.`,
-      nowSaved ? "success" : "info",
-    );
   });
 
   // "Saved" links (nav and account menu) filter in place instead of reloading

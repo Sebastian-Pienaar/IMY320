@@ -86,24 +86,8 @@ const Strumly = (() => {
     } catch {}
   }
 
-  // Emails with an account in this browser: registered here, or with learner
-  // data saved from before accounts were tracked
-  const ACCOUNTS_KEY = "strumly_accounts";
-  function accountExists(email) {
-    if (read(ACCOUNTS_KEY, []).includes(email)) return true;
-    try {
-      return Object.keys(localStorage).some(
-        (k) => k.startsWith("strumly_") && k.endsWith(`:${email}`),
-      );
-    } catch {
-      return false;
-    }
-  }
-
   // A brand-new account starts on a blank slate: no progress, saves or stats
   function register(email) {
-    const accounts = read(ACCOUNTS_KEY, []);
-    if (!accounts.includes(email)) write(ACCOUNTS_KEY, [...accounts, email]);
     login(email);
     ["progress", "saved", "stats", "last_course", "settings"].forEach((name) => {
       try {
@@ -340,23 +324,6 @@ const Strumly = (() => {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  // --- Flash: a toast that shows after the next page load ---
-  function flash(message, tone = "success") {
-    try {
-      sessionStorage.setItem("strumly_flash", JSON.stringify({ message, tone }));
-    } catch {}
-  }
-
-  function showFlash() {
-    try {
-      const raw = sessionStorage.getItem("strumly_flash");
-      if (!raw) return;
-      sessionStorage.removeItem("strumly_flash");
-      const { message, tone } = JSON.parse(raw);
-      toast(message, tone);
-    } catch {}
-  }
-
   // --- Toast
   let toastTimer;
   function toast(message, tone = "info") {
@@ -437,7 +404,6 @@ const Strumly = (() => {
     isLoggedIn,
     login,
     register,
-    accountExists,
     matchesSearch,
     learnerReviews,
     myReview,
@@ -446,8 +412,6 @@ const Strumly = (() => {
     courseRating,
     ratingBreakdown,
     download,
-    flash,
-    showFlash,
     refreshSavedCount,
     stars,
     getSettings,
@@ -589,11 +553,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("logoutBtn").addEventListener("click", () => {
       Strumly.logout();
-      Strumly.flash("You've been logged out. See you soon!", "info");
       window.location.href = "index.html";
     });
   }
 
   Strumly.refreshSavedCount();
-  Strumly.showFlash();
 });

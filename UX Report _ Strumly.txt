@@ -1,0 +1,147 @@
+﻿UX Report: Strumly
+Summary
+Our guitar-learning site is easy to use, but saving courses and searching for them need fixing. The sign-in page needs some work such as password confirmation, and when it comes to the UI, we need to separate sections with colour instead of lines. All four testers finished all five tasks without help (20 out of 20). The UEQ-S scored usability positive (+1.19) and excitement neutral (-0.13), so people find the site clear but not especially exciting.
+Two problems affected every tester:
+* Saved courses are hard to find. The save icon is only inside the course page, and the saved list is under the profile hover.
+* There is no genre filter. Testers had to type the genre into search, and all four paused on this task.
+Five smaller problems affected one to three testers each: search only matches names, nothing helps users choose a course, instructors cannot be filtered or given their own page, features are hard to see on the dark background, and sign-up has no confirm-password field. The pain point table below gives the evidence and a question to solve for each.
+What we did
+Four people tested the site one at a time. Each answered a few questions about how they learn and choose courses, did five tasks, filled in the UEQ-S, and answered debrief questions. The tasks said what to do but not how to do it:
+1. Start a course (find a course and start it)
+2. Resume a course
+3. Save and find a course (save a course for later and find it again)
+4. Find an instructor
+5. Search for a blues course
+Tester
+	Guitar experience
+	Used the site before
+	P1
+	Never played
+	No
+	P2
+	Intermediate
+	Yes
+	P3
+	Never played
+	No
+	P4
+	Intermediate
+	No
+	For each task we recorded whether they finished it, the time in seconds, wrong clicks, pauses over 5 seconds, a confidence rating out of 7, and quotes.
+Results
+UEQ-S scale
+	Score (-3 to +3)
+	Meaning
+	Usability (pragmatic)
+	+1.19
+	Positive
+	Excitement (hedonic)
+	-0.13
+	Neutral
+	Overall
+	+0.53
+	Neutral
+	
+
+Task
+	Finished unaided
+	Average time (s)
+	Wrong clicks (all 4 testers)
+	Paused over 5 s
+	Average confidence (1-7)
+	1. Start a course
+	4 of 4
+	10.5
+	2
+	0 of 4
+	6.5
+	2. Resume a course
+	4 of 4
+	11.0
+	5
+	0 of 4
+	5.5
+	3. Save and find a course
+	4 of 4
+	14.8
+	12
+	3 of 4
+	4.5
+	4. Find an instructor
+	4 of 4
+	10.5
+	5
+	0 of 4
+	5.5
+	5. Search for a blues course
+	4 of 4
+	10.0
+	8
+	4 of 4
+	5.25
+	Saving (Task 3) and searching (Task 5) caused 20 of the 32 wrong clicks and every pause. Everyone finished every task, so completion alone does not show these problems. What happened in each task:
+* Task 1: quick, with no pauses. P1 and P3 picked the first course shown.
+* Task 2: the resume button was where testers expected it, and all four used the progress bar.
+* Task 3: the slowest task. Every tester had 3 wrong clicks, 3 of 4 paused, and confidence was lowest.
+* Task 4: quick, but testers looked for an instructor filter or an instructor page.
+* Task 5: all four paused, and with no filter, testers had to type the genre into the search bar.
+Pain points to solve
+These are in priority order. High means most testers hit it or it slows a main task, Medium causes delay or workarounds, and Low is a small annoyance or suggestion. The last column is the question to answer in the redesign.
+#
+	Pain point
+	Severity
+	Affected
+	Evidence
+	Theory
+	UX-1
+	Save icon is only inside the course page, and saved courses are hard to find
+	High
+	4 of 4
+	Task 3 had 12 wrong clicks, 3 of 4 paused, and confidence was lowest (4.5 of 7). P3 and P4 expected the heart on the course card; P1 hesitated and P2 did not see it at first. P3 said saved courses are in an unusual place (the profile hover). P3: "Maybe make the save button visible on the initial course card"
+	Fitts's Law, Von Restorff Effect, Jakob's Law
+	UX-2
+	No genre filter
+	High
+	4 of 4
+	All four paused on Task 5. P1, P3 and P4 asked for a genre filter, and genre is the first thing P4 looks at when choosing a course. P4: "Where the heck is the dropdown"
+	Hick's Law, Jakob's Law
+	UX-3
+	Search only matches course and instructor names
+	Medium
+	2 of 4
+	P3 said names worked but specific terms did not. P2 said results did not match and suggested searching course descriptions
+	Postel's Law
+	UX-4
+	Nothing helps users choose a course
+	Medium
+	3 of 4
+	P1 and P3 picked the first course shown ("I just clicked the one that was at the top"). P2 read everything and suggested tags, ratings and recommendations
+	Hick's Law, cognitive dissonance
+	UX-5
+	No instructor filter, sorting or page
+	Low
+	3 of 4
+	P1: "I don't see a filter for the instructors". P4 looked for an instructors page and sorting. P2 saw value in a page. Task 4 was still quick (10.5 s)
+	Jakob's Law
+	UX-6
+	Features and sections are hard to see on the dark background
+	Low
+	2 of 4
+	P4 said some features get lost against the dark background and suggested orange borders on the save icon. P2 wanted sections divided by colour, not lines
+	Von Restorff Effect, Gestalt principles
+	UX-7
+	Sign-up has no confirm-password field (not tested in our tasks, only prof Wong tested it)
+	Low
+	1 of 4
+	P2's advice about the login page
+	Postel's Law
+	What worked well
+* Progress bar: all four testers named it as how they knew their progress.
+* Resume button: it was where testers expected it.
+* Completion animation: the best moment for P1, P3 and P4. The Peak-End Rule says people remember the best moment, so it is worth protecting.
+* Streaks and XP: P1 said they would keep them motivated.
+* Look and feel: P1 and P3 said it was easy to use, and P3 and P4 said it looked professional.
+Priorities for the redesign
+1. Solve UX-1 and UX-2 first, because every tester hit them on a main task.
+2. Then UX-3 and UX-4, which affected half or more of the testers.
+3. Treat UX-5 to UX-7 as lower priority, and test sign-up properly..

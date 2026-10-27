@@ -1,0 +1,260 @@
+﻿Participant Session 2
+A. Session details
+Participant Name
+	Professor Wong
+	Used the site before
+	Yes
+	B. Pre-test profile
+#
+	Question
+	Answer
+	1
+	Guitar experience (never played / beginner / intermediate / advanced)
+	Intermediate
+	2
+	How they have learned so far (YouTube, apps, teacher, books, friends)
+	Tapping into asian genes
+	3
+	Online course platforms used before
+	no
+	4
+	What they look at first when choosing a course
+	recommendations
+	5
+	Usual device and practice frequency
+	no
+	C. Task record
+Result codes: A = completed unaided, P = completed after a prompt, F = failed, G = gave up.
+C1. Quantitative data
+Task
+	Result (A/P/F/G)
+	Time (s)
+	Wrong clicks / backtracks
+	Pauses over 5 s
+	Confidence done (1-7)
+	1. Find and start a first course
+	A
+	10s
+	2
+	n
+	6
+	2. Resume a course
+	A
+	12s
+	3
+	n
+	5
+	3. Save a course and find it again
+	A
+	12s
+	3
+	n
+	4
+	4. Find an instructor
+	A
+	10
+	1
+	n
+	5
+	5. Search or filter for a blues course
+	A
+	7
+	1
+	y
+	5
+	C2. Qualitative data
+This section wasn’t completed with Professor Wong
+Task
+	Path taken (pages or clicks)
+	What they expected
+	What actually happened
+	Where they hesitated and why
+	Key quote
+	Issue ID
+	1
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	2
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	3
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	4
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	5
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	C3. Task-specific probes
+Task
+	Question
+	Answer
+	1
+	How did you decide which course to pick? What information did you use?
+	“Interest - had to read through everything” - add tag?
+	2
+	How did you know how far through the course you were?
+	Progress bar
+	3
+	What does the save option look like to you? Where did you expect saved courses to be?
+	Didn't see it at first
+	4
+	Where did you expect to find instructors on this site?
+	Didn’t expect a separate page, but there could be value in it
+	5
+	What did you type, and did the results match what you meant?
+	Results did not match - maybe add the course description words as searchable items
+	6
+	Was there anything you wanted to know that you couldn't find?
+	Add your own rating
+	D. UEQ-S answer sheet
+
+
+#
+	Left word
+	Right word
+	Raw (1-7)
+	Scale
+	1
+	obstructive
+	supportive
+	4
+	Pragmatic
+	2
+	complicated
+	easy
+	5
+	Pragmatic
+	3
+	inefficient
+	efficient
+	5
+	Pragmatic
+	4
+	confusing
+	clear
+	4
+	Pragmatic
+	5
+	boring
+	exciting
+	3
+	Hedonic
+	6
+	not interesting
+	interesting
+	3
+	Hedonic
+	7
+	conventional
+	inventive
+	3
+	Hedonic
+	8
+	usual
+	leading edge
+	4
+	Hedonic
+	
+
+Subtotal
+	Calculation
+	Result
+	Pragmatic quality
+	Mean of items 1-4
+	4.5
+	Hedonic quality
+	Mean of items 5-8
+	3.25
+	Overall
+	Mean of items 1-8
+	3.875
+	E. Debrief answers
+This section was not completed with professor Wong
+#
+	Question
+	Answer
+	1
+	What was the most frustrating moment, and what happened?
+	
+
+	2
+	What was the best moment, and what made it good?
+	
+
+	3
+	If you could change one thing, what would it be?
+	
+
+	4
+	Was there anything you expected to find that wasn't there?
+	
+
+	5
+	How did the site look and feel, and did that change how much you trusted it?
+	
+
+	6
+	Would you use this site to learn guitar? Why or why not?
+	
+
+	7
+	Anything else you want to tell us?
+	
+
+	
+
+Advice given by professor Wong:
+Review system, extra course material (transcription, downloadable content etc), search bar = search description of courses. Divide sections with colour not lines.
+Login page - confirm password, extra info etc.

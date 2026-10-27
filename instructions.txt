@@ -1,0 +1,42 @@
+The group project assignment is divided into 5 submissions that, over time, build a cohesive
+prototype of an online teaching service (think Udemy or Zenva). Your group is welcome to
+decide which “subject” your team plans to support.
+The initial 3 submissions will be formatted as individual components that will make up your
+final website. Submission 4 is a compulsory UX evaluation. The final assignment will require you
+to complete the website, including all previously completed and new components.
+For each submission, the group will receive a list of functions to complete and a problem
+statement (a quote from the owner) to be resolved based on a specific UX design principle
+covered in class.
+The group is required to conduct three (per deliverable) short user experience research
+sessions on an existing website (UEQ shortened questionnaire), note any criteria that scored
+relatively low/high, and use this to formulate a set of design guidelines. This will also help you
+establish common feature trends or existing practices used within the industry.
+Breakdown of submissions
+Group Design A: Login page – 9 August
+Group Design B: Products page – 23 August
+Group Design C: Customer Experience – 27 September
+Group Design D: UX Evaluation – 2 October
+Group Design E: Final website – 25 October
+The website's general operations should allow users to log in, browse courses, add courses to a
+cart, check out, and track their course progression.
+Note: You do not need to create a teaching system for the content itself! You are creating a shell
+of what the website's general operations and experience should look like. You are welcome to
+add “placeholders” to replace certain functionalities (e.g., the learning system, the course
+content, etc.).
+In addition to these general operations, your group needs to determine what other features
+might be needed and implement them accordingly. Remember, this is all about user experience.
+
+Markers need to see and be able to interact with all elements of the website. Each
+button/link/operation needs to “operate” according to your final vision. This includes things
+like loading/progress bars, feedback on elements, error handling, real images, etc. You can think
+of it as developing the full, working front end of your website.
+As explained in the study guide, completeness is a major criterion in the evaluation of all
+assignments. This means each component should be complete in both functionality and
+presentation.
+● Functionality – would include features and capabilities that allow users to interact with
+and perform tasks on the site, such as navigating pages, submitting forms, and accessing
+dynamic content. (Even if they don’t communicate with a backend, they need to appear
+that they do)
+● Presentation – would refer to the visual and structural aspects of the site, including
+layout, design, and user interface elements, which ensure that all necessary information
+is displayed and accessible to users. (Including all animations and notifications)
