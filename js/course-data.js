@@ -23,6 +23,7 @@ const strumlyInstructors = {
 const strumlyCourses = [
   {
     id: "acoustic-fingerpicking-101",
+    recommended: true,
     title: "Acoustic Beginner",
     genre: "Folk & Acoustic",
     tags: ["Fingerstyle", "Acoustic", "Folk"],
@@ -87,6 +88,7 @@ const strumlyCourses = [
   },
   {
     id: "music-theory-for-guitarists",
+    recommended: true,
     title: "Music Theory for Guitarists",
     genre: "Theory",
     tags: ["Fretboard", "CAGED", "Chords"],

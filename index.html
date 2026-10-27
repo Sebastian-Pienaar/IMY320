@@ -41,8 +41,8 @@
               class="search"
               type="search"
               name="q"
-              placeholder="Search courses or instructors"
-              aria-label="Search courses or instructors"
+              placeholder="Search courses, instructors or topics"
+              aria-label="Search courses, instructors or topics"
             />
           </form>
           <nav class="nav-links" aria-label="Main">
@@ -104,8 +104,8 @@
                 id="courseSearch"
                 class="course-search"
                 type="search"
-                placeholder="Search courses or instructors"
-                aria-label="Search courses or instructors"
+                placeholder="Search courses, instructors or topics"
+                aria-label="Search courses, instructors or topics"
               />
             </div>
 
@@ -131,6 +131,16 @@
                 <label class="filter-label" for="instructorSelect">Instructor</label>
                 <select id="instructorSelect" class="sort-select">
                   <option value="all">All instructors</option>
+                </select>
+              </div>
+
+              <div class="filter-set">
+                <label class="filter-label" for="lengthSelect">Length</label>
+                <select id="lengthSelect" class="sort-select">
+                  <option value="all">Any length</option>
+                  <option value="short">Under 5 hours</option>
+                  <option value="medium">5 to 8 hours</option>
+                  <option value="long">Over 8 hours</option>
                 </select>
               </div>
 

@@ -41,8 +41,8 @@
               class="search"
               type="search"
               name="q"
-              placeholder="Search courses or instructors"
-              aria-label="Search courses or instructors"
+              placeholder="Search courses, instructors or topics"
+              aria-label="Search courses, instructors or topics"
             />
           </form>
           <nav class="nav-links" aria-label="Main">
@@ -74,6 +74,11 @@
           <form id="authForm" novalidate>
             <div id="formError" class="form-error" role="alert" hidden></div>
 
+            <div class="field" data-register hidden>
+              <label for="displayName">Your name <span class="muted small">(optional)</span></label>
+              <input id="displayName" class="input" type="text" autocomplete="nickname" maxlength="30" />
+            </div>
+
             <div class="field">
               <label for="email">Email address</label>
               <input id="email" class="input" type="email" autocomplete="email" required aria-describedby="emailError" />
@@ -98,6 +103,18 @@
               <input id="confirm" class="input" type="password" autocomplete="new-password" aria-describedby="confirmError" />
               <p id="confirmError" class="field-error" hidden></p>
               <p id="confirmOk" class="field-ok small" hidden>Passwords match</p>
+            </div>
+
+            <div class="field" data-register hidden>
+              <label for="experience">Guitar experience <span class="muted small">(optional)</span></label>
+              <select id="experience" class="input sort-select" aria-describedby="experienceHint">
+                <option value="">Choose one</option>
+                <option value="never">Never played</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+              <p id="experienceHint" class="hint muted small">We use this to recommend courses at your level.</p>
             </div>
 
             <label class="remember"><input type="checkbox" id="remember" /> Remember me</label>

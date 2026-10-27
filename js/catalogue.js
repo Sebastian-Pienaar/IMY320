@@ -1,5 +1,5 @@
 /* Home page course catalogue: search, filters (level, genre, instructor,
-   saved), sort and saving straight from a course card. */
+   length, saved), sort and saving straight from a course card. */
 document.addEventListener("DOMContentLoaded", () => {
   const courseList = document.getElementById("courseList");
   if (!courseList) return;
@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const levelBtns = document.querySelectorAll(".filter-btn[data-level]");
   const genreSelect = document.getElementById("genreSelect");
   const instructorSelect = document.getElementById("instructorSelect");
+  const lengthSelect = document.getElementById("lengthSelect");
   const savedToggle = document.getElementById("savedToggle");
   const savedCount = document.getElementById("savedCount");
   const sortSelect = document.getElementById("sortSelect");
@@ -34,10 +35,21 @@ document.addEventListener("DOMContentLoaded", () => {
     level: params.get("level") || "all",
     genre: genres.includes(params.get("genre")) ? params.get("genre") : "all",
     instructor: params.get("instructor") in strumlyInstructors ? params.get("instructor") : "all",
+    length: "all",
     savedOnly: params.get("saved") === "1",
+  };
+
+  // Course length buckets, in minutes
+  const lengths = {
+    short: (m) => m < 300,
+    medium: (m) => m >= 300 && m <= 480,
+    long: (m) => m > 480,
   };
   let activeSort = "popular";
   if (params.get("q")) courseSearch.value = params.get("q");
+
+  // Course ids to badge as recommended (refreshed on every render)
+  let recommended = [];
 
   const ctaLabels = {
     new: "Start course",
@@ -73,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="row-body">
           <div class="row-head">
             <span class="badge level-${course.level.toLowerCase()}">${course.level}</span>
+            ${recommended.includes(course.id) ? `<span class="pill pill-rec">${icons.star}${Strumly.hasPersonalLevel() ? "Recommended for you" : "Recommended"}</span>` : ""}
           </div>
           <h3><a class="row-link" href="${Strumly.courseUrl(course)}">${course.title}</a></h3>
           <p class="row-desc muted">${course.blurb}</p>
@@ -97,18 +110,21 @@ document.addEventListener("DOMContentLoaded", () => {
     filters.level !== "all" ||
     filters.genre !== "all" ||
     filters.instructor !== "all" ||
+    filters.length !== "all" ||
     filters.savedOnly ||
     courseSearch.value.trim() !== "";
 
   function renderCourses() {
     const term = courseSearch.value.trim();
     const saved = Strumly.savedIds();
+    recommended = Strumly.recommendedIds();
 
     const visible = strumlyCourses.filter(
       (course) =>
         (filters.level === "all" || course.level === filters.level) &&
         (filters.genre === "all" || course.genre === filters.genre) &&
         (filters.instructor === "all" || course.instructor === filters.instructor) &&
+        (filters.length === "all" || lengths[filters.length](course.minutes)) &&
         (!filters.savedOnly || saved.includes(course.id)) &&
         (!term || Strumly.matchesSearch(course, term)),
     );
@@ -151,9 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     genreSelect.value = filters.genre;
     instructorSelect.value = filters.instructor;
+    lengthSelect.value = filters.length;
     savedToggle.setAttribute("aria-pressed", String(filters.savedOnly));
     genreSelect.classList.toggle("is-active", filters.genre !== "all");
     instructorSelect.classList.toggle("is-active", filters.instructor !== "all");
+    lengthSelect.classList.toggle("is-active", filters.length !== "all");
     updateNavCurrent();
   }
 
@@ -163,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function clearFilters() {
-    Object.assign(filters, { level: "all", genre: "all", instructor: "all", savedOnly: false });
+    Object.assign(filters, { level: "all", genre: "all", instructor: "all", length: "all", savedOnly: false });
     courseSearch.value = "";
     update();
     courseSearch.focus();
@@ -183,6 +201,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   instructorSelect.addEventListener("change", () => {
     filters.instructor = instructorSelect.value;
+    update();
+  });
+
+  lengthSelect.addEventListener("change", () => {
+    filters.length = lengthSelect.value;
     update();
   });
 

@@ -9,14 +9,14 @@
   --surface: #16181c;
   --surface-2: #1f2227;
   --surface-3: #282b31;
-  --border: #25282d;
+  --border: #2a2d33;
   --border-strong: #383c43;
   --footer: #08090a;
 
   /* Text */
   --text: #eceef1;
-  --muted: #9a9fa8;
-  --subtle: #6d727b;
+  --muted: #a7acb4;
+  --subtle: #7f848d;
 
   /* Brand accent + semantic colours */
   --accent: #f26b1d;
@@ -685,9 +685,14 @@ textarea {
 
 .toolbar-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: end;
   gap: var(--space-4);
+}
+
+/* Level buttons sit on their own row above the four dropdowns */
+.toolbar-row .filter-level {
+  grid-column: 1 / -1;
 }
 
 .toolbar-foot {
@@ -3056,7 +3061,7 @@ button.link {
   }
 
   .toolbar-row {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 
   .filter-level {

@@ -1,4 +1,4 @@
-/* Settings page: display name and resetting progress. */
+/* Settings page: display name, guitar experience and resetting progress. */
 document.addEventListener("DOMContentLoaded", () => {
   const settingsMain = document.getElementById("settingsMain");
   if (!settingsMain) return;
@@ -30,6 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="field">
           <label for="email">Email</label>
           <input id="email" class="input" type="email" value="${esc(Strumly.user())}" readonly />
+        </div>
+        <div class="field">
+          <label for="experience">Guitar experience</label>
+          <select id="experience" class="input sort-select" aria-describedby="experienceHint">
+            ${[
+              ["", "Not set"],
+              ["never", "Never played"],
+              ["beginner", "Beginner"],
+              ["intermediate", "Intermediate"],
+              ["advanced", "Advanced"],
+            ]
+              .map(([value, label]) => `<option value="${value}"${settings.experience === value ? " selected" : ""}>${label}</option>`)
+              .join("")}
+          </select>
+          <p id="experienceHint" class="hint muted small">Courses at your level are marked “Recommended for you”.</p>
         </div>
       </section>
 
@@ -72,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     Strumly.saveSettings({
       displayName: document.getElementById("displayName").value.trim(),
+      experience: document.getElementById("experience").value,
     });
 
     // Update the name in the nav straight away

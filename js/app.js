@@ -57,7 +57,7 @@ const Strumly = (() => {
     getSettings().displayName || (user() || "").split("@")[0];
 
   // --- Settings (per account) ---
-  const DEFAULT_SETTINGS = { displayName: "" };
+  const DEFAULT_SETTINGS = { displayName: "", experience: "" };
 
   function getSettings() {
     return { ...DEFAULT_SETTINGS, ...read(KEYS.settings, {}) };
@@ -250,6 +250,30 @@ const Strumly = (() => {
     });
   }
 
+  // --- Recommendations ---
+  // Matches the experience a learner gave at sign-up; visitors see our picks
+  const experienceLevels = {
+    never: "Beginner",
+    beginner: "Beginner",
+    intermediate: "Intermediate",
+    advanced: "Advanced",
+  };
+
+  // Recommendations are personal once a logged-in learner has set their level
+  const hasPersonalLevel = () =>
+    isLoggedIn() && Boolean(experienceLevels[getSettings().experience]);
+
+  function recommendedIds() {
+    if (!hasPersonalLevel())
+      return strumlyCourses.filter((c) => c.recommended).map((c) => c.id);
+    const level = experienceLevels[getSettings().experience];
+    return strumlyCourses
+      .filter((c) => c.level === level && courseStatus(c) !== "complete")
+      .sort((a, b) => b.rating - a.rating)
+      .slice(0, 2)
+      .map((c) => c.id);
+  }
+
   // --- Search ---
   // Matches every word typed against names, genre, tags, level and the words
   // used to describe the course and its lessons
@@ -438,6 +462,8 @@ const Strumly = (() => {
     login,
     register,
     accountExists,
+    hasPersonalLevel,
+    recommendedIds,
     matchesSearch,
     learnerReviews,
     myReview,

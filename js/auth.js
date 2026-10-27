@@ -196,6 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       if (mode === "register") {
         Strumly.register(email);
+        Strumly.saveSettings({
+          displayName: $("displayName").value.trim(),
+          experience: $("experience").value,
+        });
         Strumly.flash("Welcome to Strumly! Your account is ready.");
       } else {
         Strumly.login(email);
