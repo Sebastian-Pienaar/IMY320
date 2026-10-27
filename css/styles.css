@@ -1491,11 +1491,13 @@ a.syllabus-row:hover {
 
 .instructor-card h3 {
   margin-bottom: 2px;
+  color: var(--accent);
   font-size: 18px;
 }
 
 .instructor-card .team-role {
   margin-bottom: var(--space-2);
+  color: var(--text);
 }
 
 /* Sticky enrol panel */
