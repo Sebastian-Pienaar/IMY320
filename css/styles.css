@@ -685,7 +685,7 @@ textarea {
 
 .toolbar-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: max-content repeat(3, minmax(0, 1fr));
   align-items: end;
   gap: var(--space-4);
 }
@@ -749,30 +749,6 @@ textarea {
   background: var(--surface-2);
   border-color: var(--border-strong);
   color: var(--accent);
-}
-
-.saved-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  flex: 0 0 auto;
-  min-height: 40px;
-  padding: 0 var(--space-4);
-  border-color: var(--border-strong);
-  border-radius: var(--radius);
-  background: var(--bg);
-}
-
-.saved-toggle[aria-pressed="true"] {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--text);
-}
-
-.saved-toggle[aria-pressed="true"] svg {
-  color: var(--accent);
-  fill: currentColor;
 }
 
 .sort-select {

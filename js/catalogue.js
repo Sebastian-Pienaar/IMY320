@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const levelBtns = document.querySelectorAll(".filter-btn[data-level]");
   const genreSelect = document.getElementById("genreSelect");
   const instructorSelect = document.getElementById("instructorSelect");
-  const savedToggle = document.getElementById("savedToggle");
-  const savedCount = document.getElementById("savedCount");
   const sortSelect = document.getElementById("sortSelect");
   const clearBtn = document.getElementById("clearFilters");
   const catalogue = document.getElementById("courses");
@@ -130,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     courseList.innerHTML = visible.length
       ? visible.map(buildRow).join("")
-      : `<div class="list-empty"><p>${empty}</p>${hasFilters() ? '<button type="button" class="btn btn-secondary" data-clear>Clear filters</button>' : ""}</div>`;
+      : `<div class="list-empty"><p>${empty}</p>${hasFilters() ? `<button type="button" class="btn btn-secondary" data-clear>${filters.savedOnly && !saved.length ? "Browse all courses" : "Clear filters"}</button>` : ""}</div>`;
 
     // Stagger the entrance of each row
     courseList
@@ -139,9 +137,10 @@ document.addEventListener("DOMContentLoaded", () => {
     Strumly.animateProgress(courseList);
 
     courseCount.textContent =
-      `Showing ${visible.length} of ${strumlyCourses.length} courses` +
+      (filters.savedOnly
+        ? `Showing ${visible.length} of your ${saved.length} saved courses`
+        : `Showing ${visible.length} of ${strumlyCourses.length} courses`) +
       (term ? ` for “${term}”` : "");
-    savedCount.textContent = saved.length;
     clearBtn.hidden = !hasFilters();
   }
 
@@ -151,7 +150,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     genreSelect.value = filters.genre;
     instructorSelect.value = filters.instructor;
-    savedToggle.setAttribute("aria-pressed", String(filters.savedOnly));
     genreSelect.classList.toggle("is-active", filters.genre !== "all");
     instructorSelect.classList.toggle("is-active", filters.instructor !== "all");
     updateNavCurrent();
@@ -186,11 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
     update();
   });
 
-  savedToggle.addEventListener("click", () => {
-    filters.savedOnly = !filters.savedOnly;
-    update();
-  });
-
   sortSelect.addEventListener("change", () => {
     activeSort = sortSelect.value;
     renderCourses();
@@ -215,11 +208,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const fresh = courseList.querySelector(`[data-save="${course.id}"]`);
       if (nowSaved) fresh.classList.add("pop");
       fresh.focus();
-      savedCount.textContent = Strumly.savedIds().length;
     }
   });
 
-  // "Saved" links (nav and account menu) filter in place instead of reloading
+  // Courses and Home in the nav go back to the full list
+  ["courses", "home"].forEach((name) =>
+    navLink(name)?.addEventListener("click", () => {
+      if (!filters.savedOnly) return;
+      filters.savedOnly = false;
+      update();
+    }),
+  );
+
+  // The "Saved" nav link filters in place instead of reloading
   document.querySelectorAll("[data-saved-link]").forEach((link) =>
     link.addEventListener("click", (e) => {
       e.preventDefault();
