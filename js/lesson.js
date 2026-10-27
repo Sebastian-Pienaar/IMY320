@@ -42,20 +42,118 @@ document.addEventListener("DOMContentLoaded", () => {
   const total = course.modules.length;
   const isLast = index === total - 1;
 
-  // Break the lesson into chapters so the notes feel specific to it
-  function chapters() {
-    const parts = [
-      ["Warm-up and tuning", 0.1],
-      [`Walkthrough: ${module.title.toLowerCase()}`, 0.35],
-      ["Slow practice with the metronome", 0.3],
-      ["Play-along at full tempo", 0.25],
+  const files = Materials.files(course, index);
+  // Which materials tab is open (kept when the page re-renders)
+  let activeTab = "chapters";
+
+  function extrasHtml() {
+    const tabs = [
+      ["chapters", "Chapters"],
+      ["transcript", "Transcript"],
+      ["downloads", `Downloads <span class="tab-count">${files.length}</span>`],
     ];
-    let t = 0;
-    return parts.map(([name, share]) => {
-      const start = t;
-      t += Math.round(module.minutes * share);
-      return { name, start };
+    const chapterList = Materials.chapters(module)
+      .map((c) => `<li><span class="chapter-time">${c.start}:00</span><span>${c.name}</span></li>`)
+      .join("");
+    const transcript = Materials.transcript(course, index)
+      .map(
+        (c) => `
+          <div class="transcript-block">
+            <span class="chapter-time">${c.start}:00</span>
+            <div><strong>${c.name}</strong><p class="muted">${c.lines.join(" ")}</p></div>
+          </div>`,
+      )
+      .join("");
+    const downloads = files
+      .map(
+        (f) => `
+          <li class="download-item">
+            <span class="download-icon">${icons[f.icon]}</span>
+            <div class="download-info">
+              <strong>${f.title}</strong>
+              <span class="muted small">${f.detail}</span>
+              <div class="progress-track download-progress" hidden><div class="progress-fill"></div></div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" data-file="${f.id}" aria-label="Download ${f.title}">${icons.download}<span>Download</span></button>
+          </li>`,
+      )
+      .join("");
+
+    return `
+      <section class="lesson-extras" aria-label="Lesson materials">
+        <div class="tabs" role="tablist" aria-label="Lesson materials">
+          ${tabs
+            .map(
+              ([id, label]) => `<button type="button" role="tab" class="tab" id="tab-${id}" aria-controls="panel-${id}" aria-selected="${id === activeTab}" tabindex="${id === activeTab ? 0 : -1}">${label}</button>`,
+            )
+            .join("")}
+        </div>
+        <div class="tab-panel" role="tabpanel" id="panel-chapters" aria-labelledby="tab-chapters"${activeTab === "chapters" ? "" : " hidden"}>
+          <ol class="chapter-list">${chapterList}</ol>
+        </div>
+        <div class="tab-panel" role="tabpanel" id="panel-transcript" aria-labelledby="tab-transcript"${activeTab === "transcript" ? "" : " hidden"}>
+          ${transcript}
+          <button type="button" class="btn btn-ghost btn-sm" data-file="transcript">${icons.download}<span>Download transcript</span></button>
+        </div>
+        <div class="tab-panel" role="tabpanel" id="panel-downloads" aria-labelledby="tab-downloads"${activeTab === "downloads" ? "" : " hidden"}>
+          <ul class="download-list">${downloads}</ul>
+        </div>
+      </section>`;
+  }
+
+  function bindExtras() {
+    const tabs = [...lessonMain.querySelectorAll('[role="tab"]')];
+    const select = (tab) => {
+      activeTab = tab.id.replace("tab-", "");
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute("aria-selected", String(on));
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+      });
+    };
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => select(tab));
+      // Arrow keys move between tabs
+      tab.addEventListener("keydown", (e) => {
+        const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (!step) return;
+        const next = tabs[(i + step + tabs.length) % tabs.length];
+        select(next);
+        next.focus();
+      });
     });
+
+    // Simulated download: a short progress bar, then the real file
+    lessonMain.querySelectorAll("[data-file]").forEach((btn) =>
+      btn.addEventListener("click", () => {
+        const file = files.find((f) => f.id === btn.dataset.file);
+        const label = btn.querySelector("span");
+        const bar = btn.closest(".download-item")?.querySelector(".download-progress");
+        const original = label.textContent;
+        btn.disabled = true;
+        label.textContent = "Preparing…";
+        if (bar) {
+          bar.hidden = false;
+          bar.firstElementChild.style.width = "0";
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => (bar.firstElementChild.style.width = "100%")),
+          );
+        }
+        setTimeout(() => {
+          Strumly.download(file.filename, file.make());
+          btn.disabled = false;
+          label.textContent = "Downloaded";
+          btn.classList.add("is-done");
+          if (bar) bar.hidden = true;
+          Strumly.toast(`${file.title} downloaded.`, "success");
+          setTimeout(() => {
+            label.textContent = original;
+            btn.classList.remove("is-done");
+          }, 2500);
+        }, 900);
+      }),
+    );
   }
 
   function render() {
@@ -118,12 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           <div class="lesson-actions">${actions}</div>
 
-          <section class="lesson-notes">
-            <h2>In this lesson</h2>
-            <ol class="chapter-list">
-              ${chapters().map((c) => `<li><span class="chapter-time">${c.start}:00</span><span>${c.name}</span></li>`).join("")}
-            </ol>
-          </section>
+          ${extrasHtml()}
         </div>
 
         <aside class="lesson-side" aria-label="Course lessons">
@@ -135,6 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Strumly.animateProgress(lessonMain);
     bindPlayer();
+    bindExtras();
 
     const completeBtn = document.getElementById("completeBtn");
     if (completeBtn) completeBtn.addEventListener("click", () => complete(completeBtn));
@@ -253,7 +347,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="celebrate-actions">
           <a class="btn btn-primary btn-next" href="${primary.href}">${primary.label}</a>
-          <a class="celebrate-back" href="${Strumly.courseUrl(course)}">Back to course</a>
+          ${finale && !Strumly.myReview(course)
+            ? `<a class="celebrate-back" href="${Strumly.courseUrl(course)}#reviews">Rate this course</a>`
+            : `<a class="celebrate-back" href="${Strumly.courseUrl(course)}">Back to course</a>`}
         </div>
       </div>`;
 

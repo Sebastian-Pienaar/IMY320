@@ -24,6 +24,10 @@ const strumlyCourses = [
   {
     id: "acoustic-fingerpicking-101",
     title: "Acoustic Beginner",
+    genre: "Folk & Acoustic",
+    tags: ["Fingerstyle", "Acoustic", "Folk"],
+    // Share of ratings at 5, 4, 3, 2 and 1 stars (percent)
+    breakdown: [84, 12, 3, 1, 0],
     rating: 4.8,
     reviews: 1240,
     instructor: "Marcus Cole",
@@ -52,6 +56,10 @@ const strumlyCourses = [
   {
     id: "electric-rock-solos",
     title: "Electric Rock Solos",
+    genre: "Rock",
+    tags: ["Lead guitar", "Pentatonic", "Electric"],
+    // Share of ratings at 5, 4, 3, 2 and 1 stars (percent)
+    breakdown: [70, 20, 7, 2, 1],
     rating: 4.6,
     reviews: 870,
     instructor: "Julian Vance",
@@ -80,6 +88,10 @@ const strumlyCourses = [
   {
     id: "music-theory-for-guitarists",
     title: "Music Theory for Guitarists",
+    genre: "Theory",
+    tags: ["Fretboard", "CAGED", "Chords"],
+    // Share of ratings at 5, 4, 3, 2 and 1 stars (percent)
+    breakdown: [91, 7, 2, 0, 0],
     rating: 4.9,
     reviews: 2310,
     instructor: "Elena Rostova",
@@ -108,6 +120,10 @@ const strumlyCourses = [
   {
     id: "blues-rhythm-mastery",
     title: "Blues Rhythm Mastery",
+    genre: "Blues",
+    tags: ["Rhythm", "Shuffle", "Band playing"],
+    // Share of ratings at 5, 4, 3, 2 and 1 stars (percent)
+    breakdown: [78, 15, 5, 1, 1],
     rating: 4.7,
     reviews: 540,
     instructor: "Julian Vance",
@@ -136,6 +152,10 @@ const strumlyCourses = [
   {
     id: "songwriting-on-six-strings",
     title: "Songwriting on Six Strings",
+    genre: "Songwriting",
+    tags: ["Chords", "Melody", "Lyrics"],
+    // Share of ratings at 5, 4, 3, 2 and 1 stars (percent)
+    breakdown: [66, 22, 8, 3, 1],
     rating: 4.5,
     reviews: 690,
     instructor: "Marcus Cole",
@@ -164,6 +184,10 @@ const strumlyCourses = [
   {
     id: "jazz-chord-voicings",
     title: "Jazz Chord Voicings",
+    genre: "Jazz",
+    tags: ["Chords", "Comping", "Voice leading"],
+    // Share of ratings at 5, 4, 3, 2 and 1 stars (percent)
+    breakdown: [83, 13, 3, 1, 0],
     rating: 4.8,
     reviews: 320,
     instructor: "Elena Rostova",
@@ -190,3 +214,38 @@ const strumlyCourses = [
     ],
   },
 ];
+
+/* Sample reviews from other learners, newest first. Reviews written on this
+   site are stored separately and shown above these. */
+const strumlyReviews = {
+  "acoustic-fingerpicking-101": [
+    { name: "Thandi M.", rating: 5, date: "2026-09-14", text: "The thumb independence drills felt pointless for a week and then suddenly clicked. I can play Travis patterns without thinking now." },
+    { name: "Ruan B.", rating: 5, date: "2026-08-30", text: "Marcus explains things slowly without being boring. The slow-tempo click tracks were the most useful part for me." },
+    { name: "Priya K.", rating: 4, date: "2026-07-22", text: "Great course. I wish the last arrangement had a slower version for people with small hands." },
+  ],
+  "electric-rock-solos": [
+    { name: "Jason L.", rating: 5, date: "2026-09-02", text: "Finally stopped running up and down the pentatonic box. The phrasing lesson changed how I think about solos." },
+    { name: "Megan V.", rating: 4, date: "2026-08-11", text: "Bending in tune was hard but the drills work. Backing tracks are good fun." },
+    { name: "Sipho N.", rating: 4, date: "2026-06-19", text: "Solid material. Lesson 4 moves fast, so expect to repeat it a few times." },
+  ],
+  "music-theory-for-guitarists": [
+    { name: "Anika D.", rating: 5, date: "2026-09-20", text: "The first theory course that didn't make me read sheet music. CAGED finally makes sense." },
+    { name: "Liam O.", rating: 5, date: "2026-09-05", text: "Elena is brilliant. Every concept comes with something to play straight away." },
+    { name: "Kagiso T.", rating: 5, date: "2026-08-17", text: "Learning the notes on the fretboard properly has made every other course easier." },
+  ],
+  "blues-rhythm-mastery": [
+    { name: "Dave P.", rating: 5, date: "2026-09-11", text: "My shuffle actually swings now. The comping lesson is gold if you play in a band." },
+    { name: "Lerato S.", rating: 4, date: "2026-08-04", text: "Challenging, as advertised. The turnarounds lesson is worth the price on its own." },
+    { name: "Chris W.", rating: 5, date: "2026-07-01", text: "Julian clearly plays live a lot. Practical advice you won't get from tab sites." },
+  ],
+  "songwriting-on-six-strings": [
+    { name: "Naledi R.", rating: 5, date: "2026-09-18", text: "I finished my first song in week three. The 'finishing' module is the push I needed." },
+    { name: "Tom H.", rating: 4, date: "2026-08-25", text: "Helpful structure lessons. The lyric exercises were less useful for me, but the rest is great." },
+    { name: "Zara A.", rating: 4, date: "2026-07-13", text: "Good mix of theory and creativity. Would love more examples in different genres." },
+  ],
+  "jazz-chord-voicings": [
+    { name: "Michael F.", rating: 5, date: "2026-09-09", text: "Shell voicings first was the right call. I can comp through Autumn Leaves now." },
+    { name: "Ayesha G.", rating: 5, date: "2026-08-02", text: "Dense but very clear. The voice-leading diagrams are excellent." },
+    { name: "Ben K.", rating: 4, date: "2026-06-28", text: "Not for beginners, but if you have the basics this is the best jazz chord course I've tried." },
+  ],
+};

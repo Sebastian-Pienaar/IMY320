@@ -48,6 +48,7 @@
           <nav class="nav-links" aria-label="Main">
             <a href="index.html" data-nav="home" aria-current="page">Home</a>
             <a href="index.html#courses" data-nav="courses">Courses</a>
+            <a href="index.html?saved=1#courses" data-nav="saved" data-saved-link>Saved<span class="nav-count" data-saved-count hidden>0</span></a>
             <a href="about.html" data-nav="about">About</a>
           </nav>
           <div class="nav-auth">
@@ -86,7 +87,7 @@
         </div>
       </section>
 
-      <section id="courses" class="section" aria-labelledby="coursesTitle">
+      <section id="courses" class="section section-alt" aria-labelledby="coursesTitle">
         <div class="container">
           <div class="section-header">
             <h2 id="coursesTitle">Courses</h2>
@@ -109,7 +110,7 @@
             </div>
 
             <div class="toolbar-row">
-              <div class="filter-set">
+              <div class="filter-set filter-level">
                 <span class="filter-label" id="levelLabel">Level</span>
                 <div class="filter-group" role="group" aria-labelledby="levelLabel">
                   <button type="button" class="filter-btn" data-level="all" aria-pressed="true">All levels</button>
@@ -117,6 +118,20 @@
                   <button type="button" class="filter-btn" data-level="Intermediate" aria-pressed="false">Intermediate</button>
                   <button type="button" class="filter-btn" data-level="Advanced" aria-pressed="false">Advanced</button>
                 </div>
+              </div>
+
+              <div class="filter-set">
+                <label class="filter-label" for="genreSelect">Genre</label>
+                <select id="genreSelect" class="sort-select">
+                  <option value="all">All genres</option>
+                </select>
+              </div>
+
+              <div class="filter-set">
+                <label class="filter-label" for="instructorSelect">Instructor</label>
+                <select id="instructorSelect" class="sort-select">
+                  <option value="all">All instructors</option>
+                </select>
               </div>
 
               <div class="filter-set">
@@ -128,17 +143,19 @@
                   <option value="title">A to Z</option>
                 </select>
               </div>
+            </div>
 
-              <div class="filter-set">
-                <span class="filter-label" aria-hidden="true">Show</span>
+            <div class="toolbar-foot">
+              <p id="courseCount" class="list-count muted small" aria-live="polite"></p>
+              <div class="toolbar-foot-actions">
+                <button type="button" id="clearFilters" class="link clear-filters" hidden>Clear filters</button>
                 <button type="button" id="savedToggle" class="filter-btn saved-toggle" aria-pressed="false">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"></path></svg><span>Saved (<span id="savedCount">0</span>)</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l8.8 8.8 8.8-8.8a5.5 5.5 0 0 0 0-7.8z"></path></svg><span>Saved only (<span id="savedCount">0</span>)</span>
                 </button>
               </div>
             </div>
           </div>
 
-          <p id="courseCount" class="list-count muted small" aria-live="polite"></p>
           <div id="courseList" class="course-list"></div>
         </div>
       </section>
@@ -174,7 +191,7 @@
         </div>
       </section>
 
-      <section class="section" aria-label="Student review">
+      <section class="section section-alt" aria-label="Student review">
         <div class="container">
           <figure class="testimonial-card">
             <blockquote class="quote">

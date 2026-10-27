@@ -3,15 +3,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const teamGrid = document.getElementById("teamGrid");
   if (teamGrid) {
     teamGrid.innerHTML = Object.entries(strumlyInstructors)
-      .map(
-        ([name, info]) => `
+      .map(([name, info]) => {
+        const count = strumlyCourses.filter((c) => c.instructor === name).length;
+        return `
           <article class="team-card">
             <img src="${info.image}" alt="${name}">
             <h3>${name}</h3>
             <span class="team-role">${info.role}</span>
             <p class="muted">${info.bio}</p>
-          </article>`,
-      )
+            <a class="link small instructor-link" href="index.html?instructor=${encodeURIComponent(name)}#courses">View ${count} course${count === 1 ? "" : "s"} &rarr;</a>
+          </article>`;
+      })
       .join("");
   }
 
