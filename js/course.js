@@ -144,10 +144,11 @@ document.addEventListener("DOMContentLoaded", () => {
           <ul class="material-grid">
             ${materials.map(([icon, title, text]) => `<li class="material-card">${icon}<strong>${title}</strong><span class="muted small">${text}</span></li>`).join("")}
           </ul>
+          ${isLoggedIn ? "" : `
           <div class="sample-row">
             <button type="button" class="btn btn-secondary" id="sampleBtn">${icons.download}Download a free sample tab</button>
             <span class="muted small">Lesson 1 tab sheet, no account needed</span>
-          </div>
+          </div>`}
         </section>
 
         <section class="course-section">
@@ -395,9 +396,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Arriving from a "Rate this course" link: jump to the reviews once drawn
   if (window.location.hash === "#reviews") reviewsBody.scrollIntoView();
 
-  // --- Free sample download ---
-  const sampleBtn = document.getElementById("sampleBtn");
-  sampleBtn.addEventListener("click", () => {
+  // --- Free sample download (visitors without an account only) ---
+  document.getElementById("sampleBtn")?.addEventListener("click", () => {
     Strumly.download(`strumly-${course.id}-lesson-1-tab-sheet.txt`, Materials.tabSheet(course, 0));
     Strumly.toast("Sample tab sheet downloaded.", "success");
   });
@@ -437,7 +437,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nowSaved) {
       saveBtn.classList.add("pop");
       Confetti.popAround(saveBtn, 20);
-      Strumly.toast("Saved. Find it any time under Saved in the menu.", "success");
     }
   });
 });

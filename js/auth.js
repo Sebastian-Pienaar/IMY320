@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const confirmEl = $("confirm");
   const pwToggle = $("pwToggle");
   const forgot = $("forgot");
-  const formError = $("formError");
   const navLogin = document.querySelector('.nav-auth [data-auth="login"]');
   const navRegister = document.querySelector('.nav-auth [data-auth="register"]');
 
@@ -96,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function clearErrors() {
     [emailEl, passwordEl, confirmEl].forEach((el) => setError(el, ""));
     $("confirmOk").hidden = true;
-    formError.hidden = true;
   }
 
   const checks = {
@@ -139,53 +137,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Live re-check after the first submit attempt
   [emailEl, passwordEl, confirmEl].forEach((el) =>
     el.addEventListener("input", () => {
-      formError.hidden = true;
       if (attempted && fieldsFor().includes(el.id)) checks[el.id]();
       // Re-check the confirm field as soon as it has text, so "match" shows live
       if (mode === "register" && confirmEl.value && (el === confirmEl || el === passwordEl)) checks.confirm();
     }),
   );
 
-  // --- Account-level errors with a one-click fix ---
-  function showFormError(message, actionLabel, action) {
-    formError.innerHTML = `<p>${message}</p><button type="button" class="link">${actionLabel}</button>`;
-    formError.hidden = false;
-    formError.querySelector("button").addEventListener("click", action);
-  }
-
   authForm.addEventListener("submit", (e) => {
     e.preventDefault();
     attempted = true;
-    formError.hidden = true;
     if (!validate()) return;
 
     const email = emailEl.value.trim().toLowerCase();
-    const safeEmail = Strumly.escapeHtml(email);
-
-    if (mode === "login" && !Strumly.accountExists(email)) {
-      showFormError(
-        `We couldn't find an account for <strong>${safeEmail}</strong>. Check the spelling, or create a free account.`,
-        "Create an account with this email",
-        () => {
-          setMode("register");
-          emailEl.value = email;
-          passwordEl.focus();
-        },
-      );
-      return;
-    }
-    if (mode === "register" && Strumly.accountExists(email)) {
-      showFormError(
-        `There's already an account for <strong>${safeEmail}</strong>.`,
-        "Log in instead",
-        () => {
-          setMode("login");
-          emailEl.value = email;
-          passwordEl.focus();
-        },
-      );
-      return;
-    }
 
     submitBtn.disabled = true;
     submitBtn.textContent = mode === "login" ? "Logging in…" : "Creating account…";
@@ -194,13 +157,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Simulated network delay
     setTimeout(() => {
-      if (mode === "register") {
-        Strumly.register(email);
-        Strumly.flash("Welcome to Strumly! Your account is ready.");
-      } else {
-        Strumly.login(email);
-        Strumly.flash(`Welcome back, ${Strumly.userName()}!`);
-      }
+      if (mode === "register") Strumly.register(email);
+      else Strumly.login(email);
       window.location.href = next;
     }, 1200);
   });
