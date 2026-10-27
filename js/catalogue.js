@@ -1,20 +1,41 @@
-/* Home page course catalogue: search, level filter, saved filter and sort. */
+/* Home page course catalogue: search, filters (level, genre, instructor,
+   saved), sort and saving straight from a course card. */
 document.addEventListener("DOMContentLoaded", () => {
   const courseList = document.getElementById("courseList");
   if (!courseList) return;
 
-  const { icons, formatDuration } = Strumly;
+  const { icons, formatDuration, escapeHtml } = Strumly;
   const courseSearch = document.getElementById("courseSearch");
   const courseCount = document.getElementById("courseCount");
   const levelBtns = document.querySelectorAll(".filter-btn[data-level]");
+  const genreSelect = document.getElementById("genreSelect");
+  const instructorSelect = document.getElementById("instructorSelect");
   const savedToggle = document.getElementById("savedToggle");
   const savedCount = document.getElementById("savedCount");
   const sortSelect = document.getElementById("sortSelect");
+  const clearBtn = document.getElementById("clearFilters");
+  const catalogue = document.getElementById("courses");
+  const navLink = (name) => document.querySelector(`.nav-links [data-nav="${name}"]`);
+  let inCatalogue = window.location.hash === "#courses";
 
-  // Filters can be preset from the URL (nav search, footer and account links)
+  // Fill the genre and instructor dropdowns from the course data
+  const option = (value) =>
+    `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`;
+  const genres = [...new Set(strumlyCourses.map((c) => c.genre))].sort();
+  genreSelect.insertAdjacentHTML("beforeend", genres.map(option).join(""));
+  instructorSelect.insertAdjacentHTML(
+    "beforeend",
+    Object.keys(strumlyInstructors).map(option).join(""),
+  );
+
+  // Filters can be preset from the URL (nav search, saved link, instructor links)
   const params = new URLSearchParams(window.location.search);
-  let activeLevel = params.get("level") || "all";
-  let savedOnly = params.get("saved") === "1";
+  const filters = {
+    level: params.get("level") || "all",
+    genre: genres.includes(params.get("genre")) ? params.get("genre") : "all",
+    instructor: params.get("instructor") in strumlyInstructors ? params.get("instructor") : "all",
+    savedOnly: params.get("saved") === "1",
+  };
   let activeSort = "popular";
   if (params.get("q")) courseSearch.value = params.get("q");
 
@@ -24,10 +45,19 @@ document.addEventListener("DOMContentLoaded", () => {
     complete: "Review",
   };
 
+  function saveButton(course) {
+    const saved = Strumly.isSaved(course.id);
+    return `
+      <button type="button" class="btn save-chip" data-save="${course.id}" aria-pressed="${saved}" aria-label="${saved ? "Remove from saved" : "Save for later"}: ${course.title}">
+        ${icons.heart}<span>${saved ? "Saved" : "Save"}</span>
+      </button>`;
+  }
+
   function buildRow(course) {
     const loggedIn = Strumly.isLoggedIn();
     const status = Strumly.courseStatus(course);
     const enrolled = loggedIn && status !== "new";
+    const { rating, count } = Strumly.courseRating(course);
 
     // Enrolled learners jump straight back into their next lesson
     const ctaHref = enrolled
@@ -43,12 +73,14 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="row-body">
           <div class="row-head">
             <span class="badge level-${course.level.toLowerCase()}">${course.level}</span>
-            ${Strumly.isSaved(course.id) ? `<span class="saved-flag">${icons.heart}Saved</span>` : ""}
           </div>
           <h3><a class="row-link" href="${Strumly.courseUrl(course)}">${course.title}</a></h3>
           <p class="row-desc muted">${course.blurb}</p>
+          <ul class="tag-list" aria-label="Topics">
+            ${course.tags.map((t) => `<li class="tag">${t}</li>`).join("")}
+          </ul>
           <ul class="row-meta">
-            <li class="rating">${icons.star}<strong>${course.rating}</strong>&nbsp;<span class="muted">(${course.reviews.toLocaleString()})</span></li>
+            <li class="rating">${icons.star}<strong>${rating}</strong>&nbsp;<span class="muted">(${count.toLocaleString()})</span></li>
             <li>${icons.clock}${formatDuration(course.minutes)}</li>
             <li>${icons.user}${course.instructor}</li>
           </ul>
@@ -56,40 +88,49 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="row-actions">
           <a class="btn btn-secondary" href="${ctaHref}" aria-label="${ctaLabel}: ${course.title}">${ctaLabel}${icons.arrow}</a>
+          ${saveButton(course)}
         </div>
       </article>`;
   }
 
+  const hasFilters = () =>
+    filters.level !== "all" ||
+    filters.genre !== "all" ||
+    filters.instructor !== "all" ||
+    filters.savedOnly ||
+    courseSearch.value.trim() !== "";
+
   function renderCourses() {
-    const term = courseSearch.value.trim().toLowerCase();
+    const term = courseSearch.value.trim();
     const saved = Strumly.savedIds();
 
-    const visible = strumlyCourses.filter((course) => {
-      const matchesLevel = activeLevel === "all" || course.level === activeLevel;
-      const matchesTerm =
-        !term ||
-        course.title.toLowerCase().includes(term) ||
-        course.instructor.toLowerCase().includes(term);
-      const matchesSaved = !savedOnly || saved.includes(course.id);
-      return matchesLevel && matchesTerm && matchesSaved;
-    });
+    const visible = strumlyCourses.filter(
+      (course) =>
+        (filters.level === "all" || course.level === filters.level) &&
+        (filters.genre === "all" || course.genre === filters.genre) &&
+        (filters.instructor === "all" || course.instructor === filters.instructor) &&
+        (!filters.savedOnly || saved.includes(course.id)) &&
+        (!term || Strumly.matchesSearch(course, term)),
+    );
 
     const sorters = {
       popular: (a, b) => b.learners - a.learners,
-      rating: (a, b) => b.rating - a.rating,
+      rating: (a, b) => Strumly.courseRating(b).rating - Strumly.courseRating(a).rating,
       duration: (a, b) => a.minutes - b.minutes,
       title: (a, b) => a.title.localeCompare(b.title),
     };
     visible.sort(sorters[activeSort]);
 
-    let empty = "No courses found.";
-    if (savedOnly && !saved.length)
+    let empty = term
+      ? `No courses match “${escapeHtml(term)}”. Try a genre like “blues”, a technique like “fingerstyle”, or clear your filters.`
+      : "No courses match these filters.";
+    if (filters.savedOnly && !saved.length)
       empty =
-        "You haven't saved any courses yet. Open a course and choose “Save for later” to keep it here.";
+        "You haven't saved any courses yet. Press “Save” on any course to keep it here.";
 
     courseList.innerHTML = visible.length
       ? visible.map(buildRow).join("")
-      : `<p class="list-empty">${empty}</p>`;
+      : `<div class="list-empty"><p>${empty}</p>${hasFilters() ? '<button type="button" class="btn btn-secondary" data-clear>Clear filters</button>' : ""}</div>`;
 
     // Stagger the entrance of each row
     courseList
@@ -97,29 +138,57 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach((row, i) => (row.style.animationDelay = `${i * 60}ms`));
     Strumly.animateProgress(courseList);
 
-    courseCount.textContent = `Showing ${visible.length} of ${strumlyCourses.length} courses`;
+    courseCount.textContent =
+      `Showing ${visible.length} of ${strumlyCourses.length} courses` +
+      (term ? ` for “${term}”` : "");
     savedCount.textContent = saved.length;
+    clearBtn.hidden = !hasFilters();
   }
 
   function syncControls() {
     levelBtns.forEach((b) =>
-      b.setAttribute("aria-pressed", String(b.dataset.level === activeLevel)),
+      b.setAttribute("aria-pressed", String(b.dataset.level === filters.level)),
     );
-    savedToggle.setAttribute("aria-pressed", String(savedOnly));
+    genreSelect.value = filters.genre;
+    instructorSelect.value = filters.instructor;
+    savedToggle.setAttribute("aria-pressed", String(filters.savedOnly));
+    genreSelect.classList.toggle("is-active", filters.genre !== "all");
+    instructorSelect.classList.toggle("is-active", filters.instructor !== "all");
+    updateNavCurrent();
+  }
+
+  function update() {
+    syncControls();
+    renderCourses();
+  }
+
+  function clearFilters() {
+    Object.assign(filters, { level: "all", genre: "all", instructor: "all", savedOnly: false });
+    courseSearch.value = "";
+    update();
+    courseSearch.focus();
   }
 
   levelBtns.forEach((btn) =>
     btn.addEventListener("click", () => {
-      activeLevel = btn.dataset.level;
-      syncControls();
-      renderCourses();
+      filters.level = btn.dataset.level;
+      update();
     }),
   );
 
+  genreSelect.addEventListener("change", () => {
+    filters.genre = genreSelect.value;
+    update();
+  });
+
+  instructorSelect.addEventListener("change", () => {
+    filters.instructor = instructorSelect.value;
+    update();
+  });
+
   savedToggle.addEventListener("click", () => {
-    savedOnly = !savedOnly;
-    syncControls();
-    renderCourses();
+    filters.savedOnly = !filters.savedOnly;
+    update();
   });
 
   sortSelect.addEventListener("change", () => {
@@ -127,7 +196,44 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCourses();
   });
 
+  clearBtn.addEventListener("click", clearFilters);
   courseSearch.addEventListener("input", renderCourses);
+
+  // Save / unsave straight from the card, plus the empty-state reset
+  courseList.addEventListener("click", (e) => {
+    if (e.target.closest("[data-clear]")) return clearFilters();
+
+    const btn = e.target.closest("[data-save]");
+    if (!btn) return;
+    const course = Strumly.findCourse(btn.dataset.save);
+    const nowSaved = Strumly.toggleSaved(course.id);
+
+    if (filters.savedOnly && !nowSaved) {
+      renderCourses();
+    } else {
+      btn.outerHTML = saveButton(course);
+      const fresh = courseList.querySelector(`[data-save="${course.id}"]`);
+      if (nowSaved) fresh.classList.add("pop");
+      fresh.focus();
+      savedCount.textContent = Strumly.savedIds().length;
+    }
+    Strumly.toast(
+      nowSaved
+        ? `Saved “${course.title}”. Find it any time under Saved in the menu.`
+        : `Removed “${course.title}” from saved.`,
+      nowSaved ? "success" : "info",
+    );
+  });
+
+  // "Saved" links (nav and account menu) filter in place instead of reloading
+  document.querySelectorAll("[data-saved-link]").forEach((link) =>
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      filters.savedOnly = true;
+      update();
+      catalogue.scrollIntoView();
+    }),
+  );
 
   syncControls();
   renderCourses();
@@ -156,23 +262,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Nav highlight follows the section in view (Home vs Courses)
-  const homeLink = document.querySelector('.nav-links [data-nav="home"]');
-  const coursesLink = document.querySelector('.nav-links [data-nav="courses"]');
-  const catalogue = document.getElementById("courses");
-  if (homeLink && coursesLink && catalogue) {
-    const setCurrent = (link, on) =>
-      on
-        ? link.setAttribute("aria-current", "page")
-        : link.removeAttribute("aria-current");
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setCurrent(coursesLink, entry.isIntersecting);
-        setCurrent(homeLink, !entry.isIntersecting);
-      },
-      { rootMargin: "-40% 0px -55% 0px" },
-    );
-    observer.observe(catalogue);
+  // Nav highlight follows the section in view (Home vs Courses vs Saved)
+  function updateNavCurrent() {
+    const current = !inCatalogue ? "home" : filters.savedOnly ? "saved" : "courses";
+    ["home", "courses", "saved"].forEach((name) => {
+      const link = navLink(name);
+      if (!link) return;
+      if (name === current) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
   }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      inCatalogue = entry.isIntersecting;
+      updateNavCurrent();
+    },
+    { rootMargin: "-40% 0px -55% 0px" },
+  );
+  observer.observe(catalogue);
 });
