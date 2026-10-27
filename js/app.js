@@ -166,10 +166,13 @@ const Strumly = (() => {
   }
 
   // --- Learner stats (XP, streak, practice time) ---
+  // The learner's local calendar date (toISOString would use UTC, so a
+  // lesson just after midnight in South Africa would count as yesterday)
   function dayKey(offset = 0) {
     const d = new Date();
     d.setDate(d.getDate() + offset);
-    return d.toISOString().slice(0, 10);
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
 
   function getStats() {
@@ -202,6 +205,7 @@ const Strumly = (() => {
     stats.xp += xp;
     if (!alreadyDone) stats.minutes += module.minutes;
     write(KEYS.stats, stats);
+    refreshMenuStats();
 
     return {
       xp,
@@ -211,6 +215,15 @@ const Strumly = (() => {
       percent: Math.round((done.length / course.modules.length) * 100),
       courseComplete: done.length >= course.modules.length,
     };
+  }
+
+  // XP and streak line in the account menu
+  const statsLabel = (stats) =>
+    `${icons.zap}${stats.xp.toLocaleString()} XP &middot; ${stats.streak}-day streak`;
+
+  function refreshMenuStats() {
+    const el = document.querySelector("[data-menu-stats]");
+    if (el) el.innerHTML = statsLabel(getStats());
   }
 
   // --- Saved courses ---
@@ -434,6 +447,8 @@ const Strumly = (() => {
     resumeTarget,
     completeModule,
     getStats,
+    statsLabel,
+    refreshMenuStats,
     savedIds,
     isSaved,
     toggleSaved,
@@ -494,7 +509,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (navAuth && Strumly.isLoggedIn()) {
     const name = Strumly.escapeHtml(Strumly.userName());
     const stats = Strumly.getStats();
-    const savedCount = Strumly.savedIds().length;
 
     navAuth.innerHTML = `
       <div class="account">
@@ -505,9 +519,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <ul class="account-menu" id="accountMenu">
           <li class="menu-head">
             <strong>${name}</strong>
-            <span>${icons.zap}${stats.xp.toLocaleString()} XP &middot; ${stats.streak}-day streak</span>
+            <span data-menu-stats>${Strumly.statsLabel(stats)}</span>
           </li>
-          <li><a href="index.html?saved=1#courses" data-saved-link>${icons.heart}Saved for later<span class="menu-count" data-saved-count>${savedCount}</span></a></li>
           <li><a href="settings.html">${icons.settings}Settings</a></li>
           <li><button type="button" id="logoutBtn">${icons.logout}Log out</button></li>
         </ul>

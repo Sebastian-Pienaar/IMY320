@@ -96,8 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("resetConfirm").addEventListener("click", () => {
     Strumly.resetProgress();
     dialog.close();
-    const menuStats = document.querySelector(".menu-head span");
-    if (menuStats) menuStats.innerHTML = `${Strumly.icons.zap}0 XP &middot; 0-day streak`;
+    Strumly.refreshMenuStats();
     showStatus("resetStatus", "Progress reset");
   });
 });
