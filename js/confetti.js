@@ -1,5 +1,5 @@
-/* Guitar-pick confetti drawn on a single full-screen canvas.
-   Skipped entirely for users who prefer reduced motion. */
+//Guitar-pick confetti drawn on a single full-screen canvas.
+  
 const Confetti = (() => {
   const COLORS = ["#f26b1d", "#f26b1d", "#e8b33c", "#eceef1"];
   const PICK = new Path2D(
