@@ -630,8 +630,64 @@ textarea {
   color: var(--star);
 }
 
-.hero-proof.is-personal svg {
-  color: var(--accent);
+/* "Continue learning" card for returning learners */
+.hero-ctas.is-resume {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.resume-card {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 540px;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  transition: box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.resume-card:hover,
+.resume-card:focus-visible {
+  outline: none;
+  background: var(--surface-2);
+  box-shadow: inset 0 0 0 1px rgba(242, 107, 29, 0.6);
+}
+
+.resume-thumb {
+  width: 96px;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.resume-body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.resume-title {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.resume-meta {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.resume-body .progress-track {
+  height: 4px;
+  margin-top: var(--space-2);
+}
+
+.resume-browse {
+  font-size: 15px;
 }
 
 .hero-img {
@@ -685,7 +741,7 @@ textarea {
 
 .toolbar-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: max-content repeat(3, minmax(0, 1fr));
   align-items: end;
   gap: var(--space-4);
 }
@@ -749,30 +805,6 @@ textarea {
   background: var(--surface-2);
   border-color: var(--border-strong);
   color: var(--accent);
-}
-
-.saved-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  flex: 0 0 auto;
-  min-height: 40px;
-  padding: 0 var(--space-4);
-  border-color: var(--border-strong);
-  border-radius: var(--radius);
-  background: var(--bg);
-}
-
-.saved-toggle[aria-pressed="true"] {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: var(--text);
-}
-
-.saved-toggle[aria-pressed="true"] svg {
-  color: var(--accent);
-  fill: currentColor;
 }
 
 .sort-select {
@@ -3199,6 +3231,18 @@ button.link {
 
   .instructor-card {
     flex-direction: column;
+  }
+
+  .resume-card {
+    grid-template-columns: 72px 1fr;
+  }
+
+  .resume-thumb {
+    width: 72px;
+  }
+
+  .resume-go {
+    grid-column: 1 / -1;
   }
 
   .course-section,

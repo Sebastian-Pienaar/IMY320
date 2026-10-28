@@ -157,8 +157,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Simulated network delay
     setTimeout(() => {
-      if (mode === "register") Strumly.register(email);
-      else Strumly.login(email);
+      // Unticked "Remember me" ends the session when the browser closes
+      const remember = $("remember").checked;
+      if (mode === "register") Strumly.register(email, remember);
+      else Strumly.login(email, remember);
       window.location.href = next;
     }, 1200);
   });

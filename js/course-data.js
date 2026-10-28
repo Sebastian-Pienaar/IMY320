@@ -205,7 +205,7 @@ const strumlyCourses = [
     learners: 2470,
     likes: 289,
     image:
-      "https://images.unsplash.com/photo-1524230572899-a752b3835840?w=600&q=80",
+      "https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?w=600&q=80",
     modules: [
       { title: "Shell voicings and guide tones", minutes: 130 },
       { title: "Drop-2 shapes", minutes: 145 },
@@ -235,7 +235,7 @@ const strumlyReviews = {
   ],
   "blues-rhythm-mastery": [
     { name: "Dave P.", rating: 5, date: "2026-09-11", text: "My shuffle actually swings now. The comping lesson is gold if you play in a band." },
-    { name: "Lerato S.", rating: 4, date: "2026-08-04", text: "Challenging, as advertised. The turnarounds lesson is worth the price on its own." },
+    { name: "Lerato S.", rating: 4, date: "2026-08-04", text: "Challenging, as advertised. The turnarounds lesson alone made it worth it." },
     { name: "Chris W.", rating: 5, date: "2026-07-01", text: "Julian clearly plays live a lot. Practical advice you won't get from tab sites." },
   ],
   "songwriting-on-six-strings": [

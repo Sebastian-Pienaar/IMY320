@@ -43,9 +43,11 @@ const Strumly = (() => {
   }
 
   // --- Session ---
+  // "Remember me" keeps the session in localStorage; otherwise it lives in
+  // sessionStorage and ends when the browser is closed
   function user() {
     try {
-      return localStorage.getItem(USER_KEY);
+      return sessionStorage.getItem(USER_KEY) || localStorage.getItem(USER_KEY);
     } catch {
       return null;
     }
@@ -80,25 +82,39 @@ const Strumly = (() => {
   const escapeHtml = (text) =>
     String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-  function login(email) {
+  function startSession(email, remember) {
     try {
-      localStorage.setItem(USER_KEY, email);
+      localStorage.removeItem(USER_KEY);
+      sessionStorage.removeItem(USER_KEY);
+      (remember ? localStorage : sessionStorage).setItem(USER_KEY, email);
     } catch {}
   }
 
-  // A brand-new account starts on a blank slate: no progress, saves or stats
-  function register(email) {
-    login(email);
-    ["progress", "saved", "stats", "last_course", "settings"].forEach((name) => {
-      try {
-        localStorage.removeItem(key(name));
-      } catch {}
-    });
+  // Courses saved before logging in come along to the account
+  function signIn(email, remember, fresh) {
+    const guestSaved = savedIds();
+    startSession(email, remember);
+    // A brand-new account starts on a blank slate: no progress, saves or stats
+    if (fresh) {
+      ["progress", "saved", "stats", "last_course", "settings"].forEach((name) => {
+        try {
+          localStorage.removeItem(key(name));
+        } catch {}
+      });
+    }
+    write(KEYS.saved, [...new Set([...savedIds(), ...guestSaved])]);
+    try {
+      localStorage.removeItem("strumly_saved:guest");
+    } catch {}
   }
+
+  const login = (email, remember = true) => signIn(email, remember, false);
+  const register = (email, remember = true) => signIn(email, remember, true);
 
   function logout() {
     try {
       localStorage.removeItem(USER_KEY);
+      sessionStorage.removeItem(USER_KEY);
     } catch {}
   }
 
